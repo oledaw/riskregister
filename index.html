@@ -641,6 +641,7 @@ let sortState = {
   field: null,
   dir: 'asc' // asc | desc
 };
+let statsFilter = 'all';
 
 function lozenge(text,cfg){
   return `<span class="lozenge" style="background:${cfg.bg};color:${cfg.text}">${text}</span>`;
@@ -670,13 +671,29 @@ function getFiltered(){
   const fs=document.getElementById('filter-status').value;
   const fp=document.getElementById('filter-prio').value;
   const fa=document.getElementById('filter-area').value;
-  return risks.filter(r=>{
+
+  let data = risks.filter(r=>{
     if(q && !r.title.toLowerCase().includes(q) && !r.key.toLowerCase().includes(q)) return false;
     if(fs && r.status!==fs) return false;
     if(fp && r.prio!==fp) return false;
     if(fa && r.area!==fa) return false;
     return true;
   });
+
+  // 👇 STAT FILTER LOGIC
+  if(statsFilter === 'active'){
+    data = data.filter(r => r.status === 'otwarty' || r.status === 'w trakcie');
+  }
+
+  if(statsFilter === 'blocking'){
+    data = data.filter(r => r.prio === 'zatrzyma projekt' && r.status !== 'zamknięty' && r.status !== 'skipnięty');
+  }
+
+  if(statsFilter === 'catchup'){
+    data = data.filter(r => r.flag === 'tak' && (r.status === 'otwarty' || r.status === 'w trakcie'));
+  }
+
+  return data;
 }
 
 function getSorted(data){
@@ -815,12 +832,36 @@ function renderStats(){
   const blocking=risks.filter(r=>r.prio==='zatrzyma projekt'&&r.status!=='zamknięty'&&r.status!=='skipnięty').length;
   const catchup=risks.filter(r=>r.flag==='tak'&&(r.status==='otwarty'||r.status==='w trakcie')).length;
   const done=risks.filter(r=>r.status==='zamknięty'||r.status==='skipnięty').length;
-  document.getElementById('stats-row').innerHTML=`
-    <div class="stat-card"><div class="stat-num">${risks.length}</div><div class="stat-label">Wszystkich ryzyk</div></div>
-    <div class="stat-card"><div class="stat-num" style="color:var(--blue)">${active}</div><div class="stat-label">Aktywnych</div></div>
-    <div class="stat-card"><div class="stat-num" style="color:var(--prio-high-text)">${blocking}</div><div class="stat-label">Blokujących projekt</div></div>
-    <div class="stat-card"><div class="stat-num" style="color:var(--prio-mid-text)">${catchup}</div><div class="stat-label">Wymaga catch-upu</div></div>
+
+  const card = (label, value, filterKey, color) => `
+    <div class="stat-card" onclick="setStatsFilter('${filterKey}')" style="cursor:pointer;${statsFilter===filterKey?'outline:2px solid var(--blue)':''}">
+      <div class="stat-num" style="color:${color||'var(--text)'}">${value}</div>
+      <div class="stat-label">${label}</div>
+    </div>
   `;
+
+  document.getElementById('stats-row').innerHTML=`
+    ${card('Blokujących projekt', blocking, 'blocking', 'var(--prio-high-text)')}
+    ${card('Wymaga catch-upu', catchup, 'catchup', 'var(--prio-mid-text)')}
+    ${card('Aktywnych', active, 'active', 'var(--blue)')}
+    ${card('Wszystkich ryzyk', risks.length, 'all')}
+  `;
+}
+
+function markCatchupDiscussed(id){
+  const r = risks.find(x => x.id === id);
+  if(!r) return;
+
+  r.flag = 'nie';
+  r.changed = 'teraz';
+
+  selectRisk(id); // odśwież panel
+}
+
+function setStatsFilter(filter){
+  statsFilter = filter;
+  selectedRow = null;
+  render();
 }
 
 function selectRisk(id){
@@ -868,6 +909,13 @@ function selectRisk(id){
       <div style="font-size:11px;font-weight:600;color:var(--text-muted);letter-spacing:.05em;text-transform:uppercase;margin-bottom:8px">Akcje</div>
       <div class="dp-actions">
         <button class="btn-action" onclick="editRisk(${r.id})">Edytuj</button>
+      
+        ${r.flag === 'tak' ? `
+          <button class="btn-action" onclick="markCatchupDiscussed(${r.id})">
+            Omówiono (odznacz catch-up)
+          </button>
+        ` : ''}
+      
         ${btns}
       </div>
     </div>

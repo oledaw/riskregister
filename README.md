@@ -62,6 +62,61 @@ Cel: **decyzje, nie raportowanie.**
 
 ---
 
+## 6. Priorytety ryzyk – jak je rozumieć
+
+### 🔴 HIGH — „Zatrzyma projekt”
+
+**Jak to rozumieć:**  
+Bez rozwiązania tego ryzyka projekt nie może iść dalej.
+
+**Sygnały:**
+- blocker / brak możliwości pracy  
+- brak danych / decyzji / środowiska  
+- zależność zewnętrzna blokuje wszystko  
+
+**Przykład:**  
+API nie istnieje → frontend stoi → nic nie da się testować  
+
+**Test decyzyjny:**  
+👉 „Czy zespół może pracować dalej mimo tego?”  
+→ jeśli **nie** → to jest **HIGH**
+
+### 🟠 MEDIUM — „Psuje rezultat”
+
+**Jak to rozumieć:**  
+Projekt pójdzie dalej, ale dowiezie coś gorszego niż planowaliśmy.
+
+**Sygnały:**
+- kompromisy jakościowe  
+- niepełne feature’y  
+- rework / zmiany scope’u  
+
+**Przykład:**  
+Feature działa, ale nie spełnia wymagań biznesowych → trzeba poprawiać  
+
+**Test decyzyjny:**  
+👉 „Czy dowieziemy coś innego niż obiecaliśmy?”  
+→ jeśli **tak** → to **MEDIUM**
+
+### 🟢 LOW — „Przesuwa termin”
+
+**Jak to rozumieć:**  
+Dowieziemy to, co trzeba — tylko później.
+
+**Sygnały:**
+- chwilowy brak zasobów  
+- opóźnienia w komunikacji  
+- drobne blokady operacyjne  
+
+**Przykład:**  
+Developer dostępny za tydzień → timeline się przesuwa  
+
+**Test decyzyjny:**  
+👉 „Czy jedyny problem to czas?”  
+→ jeśli **tak** → to **LOW**
+
+---
+
 ## 6. Zmaterializowane ryzyko
 Gdy ryzyko się wydarzy:
 - PM oznacza ryzyko jak zmaterializowane

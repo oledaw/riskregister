@@ -477,27 +477,27 @@ textarea{min-height:64px}
     </div>
     <div class="modal-body">
       <div class="form-group">
-        <label class="form-label">Tytuł ryzyka *</label>
-        <input type="text" id="f-title" placeholder="Krótki, opisowy tytuł">
+        <label class="form-label">Tytuł ryzyka * <span>— co może stać się problemem w projekcie? </span></label>
+        <input type="text" id="f-title" placeholder="Webcon nie będzie miał potrzebnych danych do konsumpcji w procesie">
       </div>
       <div class="form-group">
-        <label class="form-label">Opis <span>— jeżeli X, to…</span></label>
-        <textarea id="f-desc" placeholder="Jeżeli… to może nastąpić…"></textarea>
+        <label class="form-label">Opis <span>— jeżeli X, to Y </span></label>
+        <textarea id="f-desc" placeholder="Jeżeli API nie będzie gotowe na czas to Webcon może wstrzymać prace "></textarea>
       </div>
       <div class="form-group">
-        <label class="form-label">Konsekwencja</label>
-        <textarea id="f-cons" placeholder="Co konkretnie się stanie i jaki będzie wpływ na projekt"></textarea>
+        <label class="form-label">Konsekwencja *<span>— no i co z tego? </span></label>
+        <textarea id="f-cons" placeholder="Wznowienie pracy może być obarczone narzutem co wpłynie negatywnie na ogólny harmonogram"></textarea>
       </div>
       <div class="form-group">
         <label class="form-label">Priorytet *</label>
         <div class="prio-picker">
           <div class="prio-opt" data-prio="opóźni projekt" onclick="selectPrio(this)">
             <div class="prio-opt-name">Opóźni projekt</div>
-            <div class="prio-opt-desc">Da się nadrobić, wynik bez zmian</div>
+            <div class="prio-opt-desc">Termin się przesunie, wynik bez zmian</div>
           </div>
           <div class="prio-opt" data-prio="zagrozi deliverable" onclick="selectPrio(this)">
             <div class="prio-opt-name">Zagrozi deliverable</div>
-            <div class="prio-opt-desc">Ryzyko okrojenia lub niedostarczenia</div>
+            <div class="prio-opt-desc">Ryzyko niedostarczenia określonych rezultatów</div>
           </div>
           <div class="prio-opt" data-prio="zatrzyma projekt" onclick="selectPrio(this)">
             <div class="prio-opt-name">Zatrzyma projekt</div>
@@ -537,11 +537,10 @@ textarea{min-height:64px}
           </select>
         </div>
         <div class="form-group">
-          <label class="form-label">Wymaga catch-upu?</label>
-          <select id="f-flag">
-            <option value="nie">Nie</option>
-            <option value="tak">Tak</option>
-          </select>
+          <label class="form-label" style="display:flex;align-items:center;gap:8px;cursor:pointer">
+            <input type="checkbox" id="f-flag" style="width:16px;height:16px;cursor:pointer">
+            Wymaga catch-upu
+          </label>
         </div>
       </div>
     </div>
@@ -803,7 +802,7 @@ function openModal(){
   document.getElementById('f-area').value='zakres';
   document.getElementById('f-author').value='PM';
   document.getElementById('f-owner').value='PM';
-  document.getElementById('f-flag').value='nie';
+  document.getElementById('f-flag').checked = false;
   document.querySelectorAll('.prio-opt').forEach(o=>o.className='prio-opt');
   selectedPrio='';
   document.getElementById('modal-backdrop').classList.add('open');
@@ -821,7 +820,7 @@ function editRisk(id){
   document.getElementById('f-area').value=r.area;
   document.getElementById('f-author').value=r.author;
   document.getElementById('f-owner').value=r.owner;
-  document.getElementById('f-flag').value=r.flag;
+  document.getElementById('f-flag').checked = r.flag === 'tak';
   document.querySelectorAll('.prio-opt').forEach(o=>{
     o.className='prio-opt';
     if(o.dataset.prio===r.prio)o.classList.add(PRIO[r.prio]?.sel||'');
@@ -846,7 +845,7 @@ function saveRisk(){
     author:document.getElementById('f-author').value,
     mit:document.getElementById('f-mit').value.trim(),
     owner:document.getElementById('f-owner').value,
-    flag:document.getElementById('f-flag').value,
+    flag: document.getElementById('f-flag').checked ? 'tak' : 'nie',
   };
   if(editingId){
     const idx=risks.findIndex(x=>x.id===editingId);

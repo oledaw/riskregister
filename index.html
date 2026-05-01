@@ -1090,10 +1090,19 @@ const TOUR_STEPS = [
   {
     label: 'Krok 2 z 4',
     heading: 'Lista ryzyk',
-    body: 'Tu trzymasz wszystkie ryzyka projektu. Filtry u góry pozwalają szybko zawęzić widok — np. tylko blokujące albo tylko Twoje. Kliknij dowolny wiersz, żeby zobaczyć szczegóły.',
-    target: 'table-wrap',
+    body: 'Tu trzymasz wszystkie ryzyka projektu. Filtry u góry pozwalają szybko zawęzić widok — np. tylko blokujące albo tylko Twoje. Kliknij dowolny element, żeby zobaczyć szczegóły.',
+    getTarget: () => {
+      const table = document.getElementById('table-wrap');
+      const cards = document.getElementById('card-view');
+  
+      // jeśli tabela jest ukryta → użyj kart
+      if (window.getComputedStyle(table).display === 'none') {
+        return 'card-view';
+      }
+      return 'table-wrap';
+    },
     placement: 'above'
-  },
+},
   {
     label: 'Krok 3 z 4',
     heading: 'Karta szczegółów',
@@ -1137,7 +1146,8 @@ function showTourStep() {
   // Krok 3: panel właśnie się otworzył — czekamy na zakończenie animacji (transition 0.2s)
   const delay = tourStep === 2 ? 280 : 80;
   setTimeout(function run() {
-    const el = document.getElementById(s.target);
+    const targetId = typeof s.getTarget === 'function' ? s.getTarget() : s.target;
+    const el = document.getElementById(targetId);
     if (!el) return;
 
     const rect = el.getBoundingClientRect();

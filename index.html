@@ -437,13 +437,11 @@ textarea{min-height:64px}
     <table>
       <thead>
         <tr>
-          <th style="width:80px">Klucz <span class="sort">↕</span></th>
-          <th>Ryzyko</th>
-          <th style="width:130px">Priorytet <span class="sort">↕</span></th>
-          <th style="width:110px">Status <span class="sort">↕</span></th>
-          <th style="width:90px">Obszar <span class="sort">↕</span></th>
-          <th style="width:110px">Właściciel</th>
-          <th style="width:80px">Dodał</th>
+          <th style="width:80px" onclick="setSort('key')">Klucz <span class="sort">↕</span></th>
+          <th onclick="setSort('title')">Ryzyko</th>
+          <th style="width:130px" onclick="setSort('prio')">Priorytet <span class="sort">↕</span></th>
+          <th style="width:110px" onclick="setSort('status')">Status <span class="sort">↕</span></th>
+          <th style="width:90px" onclick="setSort('area')">Obszar <span class="sort">↕</span></th>
         </tr>
       </thead>
       <tbody id="tbody"></tbody>

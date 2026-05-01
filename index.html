@@ -586,6 +586,10 @@ let risks=[
 ];
 
 let selectedPrio='', editingId=null, selectedRow=null;
+let sortState = {
+  field: null,
+  dir: 'asc' // asc | desc
+};
 
 function lozenge(text,cfg){
   return `<span class="lozenge" style="background:${cfg.bg};color:${cfg.text}">${text}</span>`;
@@ -624,8 +628,61 @@ function getFiltered(){
   });
 }
 
+function getSorted(data){
+  if(!sortState.field) return data;
+
+  const dir = sortState.dir === 'asc' ? 1 : -1;
+
+  return [...data].sort((a,b)=>{
+    switch(sortState.field){
+
+      case 'key':
+        return (parseInt(a.key.split('-')[1]) - parseInt(b.key.split('-')[1])) * dir;
+
+      case 'title': // catchup first / last
+        const aFlag = a.flag === 'tak' ? 1 : 0;
+        const bFlag = b.flag === 'tak' ? 1 : 0;
+        return (bFlag - aFlag) * dir;
+
+      case 'prio':
+        const prioOrder = {
+          'zatrzyma projekt': 3,
+          'zagrozi deliverable': 2,
+          'opóźni projekt': 1
+        };
+        return (prioOrder[b.prio] - prioOrder[a.prio]) * dir;
+
+      case 'status':
+        const statusOrder = {
+          'otwarty': 1,
+          'w trakcie': 2,
+          'zamknięty': 3,
+          'zmaterializowany': 4,
+          'skipnięty': 5
+        };
+        return (statusOrder[a.status] - statusOrder[b.status]) * dir;
+
+      case 'area':
+        return a.area.localeCompare(b.area) * dir;
+
+      default:
+        return 0;
+    }
+  });
+}
+
+function setSort(field){
+  if(sortState.field === field){
+    sortState.dir = sortState.dir === 'asc' ? 'desc' : 'asc';
+  } else {
+    sortState.field = field;
+    sortState.dir = 'asc';
+  }
+  render();
+}
+
 function render(){
-  const filtered=getFiltered();
+  const filtered = getSorted(getFiltered());
   const tbody=document.getElementById('tbody');
   if(!filtered.length){
     tbody.innerHTML=`<tr><td colspan="7" style="text-align:center;padding:40px;color:var(--text-faint)">Brak ryzyk pasujących do filtrów</td></tr>`;

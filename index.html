@@ -442,6 +442,8 @@ textarea{min-height:64px}
           <th style="width:130px" onclick="setSort('prio')">Priorytet <span class="sort">↕</span></th>
           <th style="width:110px" onclick="setSort('status')">Status <span class="sort">↕</span></th>
           <th style="width:90px" onclick="setSort('area')">Obszar <span class="sort">↕</span></th>
+          <th style="width:110px" onclick="setSort('owner')">Właściciel <span class="sort">↕</span></th>
+          <th style="width:80px" onclick="setSort('author')">Dodał <span class="sort">↕</span></th>
         </tr>
       </thead>
       <tbody id="tbody"></tbody>
@@ -662,6 +664,12 @@ function getSorted(data){
 
       case 'area':
         return a.area.localeCompare(b.area) * dir;
+
+      case 'owner':
+        return a.owner.localeCompare(b.owner) * dir;
+
+      case 'author':
+        return a.author.localeCompare(b.author) * dir;
 
       default:
         return 0;

@@ -1,0 +1,796 @@
+How to make this poc available online as github page
+
+<!DOCTYPE html>
+<html lang="pl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Risk Register</title>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+
+:root{
+  --bg:#F4F5F7;
+  --surface:#FFFFFF;
+  --surface2:#F4F5F7;
+  --border:#DFE1E6;
+  --border-strong:#C1C7D0;
+  --text:#172B4D;
+  --text-muted:#5E6C84;
+  --text-faint:#97A0AF;
+  --blue:#0052CC;
+  --blue-bg:#DEEBFF;
+  --blue-text:#0052CC;
+  --nav:#0747A6;
+  --nav-surface:#253858;
+
+  --prio-low-bg:#E3FCEF;    --prio-low-text:#006644;    --prio-low-dot:#00875A;
+  --prio-mid-bg:#FFFAE6;    --prio-mid-text:#974F0C;    --prio-mid-dot:#FF991F;
+  --prio-high-bg:#FFEBE6;   --prio-high-text:#BF2600;   --prio-high-dot:#DE350B;
+
+  --status-open-bg:#DEEBFF;       --status-open-text:#0052CC;
+  --status-progress-bg:#E6FCFF;   --status-progress-text:#006EA7;
+  --status-done-bg:#E3FCEF;       --status-done-text:#006644;
+  --status-skip-bg:#F4F5F7;       --status-skip-text:#5E6C84;
+  --status-mat-bg:#FFEBE6;        --status-mat-text:#BF2600;
+
+  --area-scope-bg:#EAE6FF;   --area-scope-text:#403294;
+  --area-team-bg:#E3FCEF;    --area-team-text:#006644;
+  --area-res-bg:#FFFAE6;     --area-res-text:#974F0C;
+  --area-proc-bg:#FFEBE6;    --area-proc-text:#BF2600;
+  --area-har-bg:#DEEBFF;     --area-har-text:#0052CC;
+}
+
+body{font-family:'Inter',sans-serif;background:var(--bg);color:var(--text);font-size:14px;line-height:1.5}
+
+/* TOP NAV */
+.topnav{
+  background:#0747A6;
+  height:48px;
+  display:flex;
+  align-items:center;
+  padding:0 16px;
+  gap:8px;
+}
+.topnav-logo{
+  display:flex;align-items:center;gap:8px;
+  color:#fff;font-size:14px;font-weight:600;
+  padding:0 8px;
+}
+.topnav-logo svg{flex-shrink:0}
+.topnav-sep{width:1px;height:20px;background:rgba(255,255,255,.2);margin:0 4px}
+.topnav-item{
+  color:rgba(255,255,255,.85);font-size:13px;font-weight:400;
+  padding:4px 10px;border-radius:3px;cursor:pointer;
+  transition:background .1s;
+}
+.topnav-item:hover{background:rgba(255,255,255,.15)}
+.topnav-right{margin-left:auto;display:flex;align-items:center;gap:6px}
+.avatar{width:28px;height:28px;border-radius:50%;background:#0052CC;color:#fff;font-size:11px;font-weight:600;display:flex;align-items:center;justify-content:center;cursor:pointer}
+
+/* SIDEBAR */
+.layout{display:flex;height:calc(100vh - 48px)}
+.sidebar{
+  width:240px;flex-shrink:0;
+  background:#253858;
+  padding:16px 0;
+  display:flex;flex-direction:column;
+  overflow-y:auto;
+}
+.sidebar-section{padding:0 12px;margin-bottom:8px}
+.sidebar-label{font-size:11px;font-weight:600;color:rgba(255,255,255,.45);letter-spacing:.06em;text-transform:uppercase;padding:6px 8px 4px}
+.sidebar-item{
+  display:flex;align-items:center;gap:8px;
+  padding:6px 8px;border-radius:3px;
+  color:rgba(255,255,255,.75);font-size:13px;
+  cursor:pointer;transition:background .1s;
+}
+.sidebar-item:hover{background:rgba(255,255,255,.1);color:#fff}
+.sidebar-item.active{background:rgba(255,255,255,.15);color:#fff;font-weight:500}
+.sidebar-item svg{flex-shrink:0;opacity:.7}
+.sidebar-item.active svg{opacity:1}
+
+/* MAIN */
+.main{flex:1;overflow-y:auto;padding:24px 32px}
+
+.page-header{
+  display:flex;align-items:center;justify-content:space-between;
+  margin-bottom:20px;
+  gap:16px;
+}
+.page-title{font-size:20px;font-weight:600;color:var(--text)}
+.page-subtitle{font-size:13px;color:var(--text-muted);margin-top:2px}
+
+.btn-primary{
+  display:flex;align-items:center;gap:6px;
+  background:var(--blue);color:#fff;
+  border:none;border-radius:3px;
+  padding:7px 14px;
+  font-family:'Inter',sans-serif;
+  font-size:13px;font-weight:500;
+  cursor:pointer;transition:background .1s;white-space:nowrap;
+}
+.btn-primary:hover{background:#0065FF}
+
+/* TOOLBAR */
+.toolbar{
+  display:flex;align-items:center;gap:8px;
+  margin-bottom:16px;flex-wrap:wrap;
+}
+.search-box{
+  display:flex;align-items:center;gap:6px;
+  background:var(--surface);border:2px solid var(--border);
+  border-radius:3px;padding:5px 10px;
+  transition:border-color .1s;
+}
+.search-box:focus-within{border-color:var(--blue)}
+.search-box input{
+  border:none;outline:none;background:transparent;
+  font-family:'Inter',sans-serif;font-size:13px;
+  color:var(--text);width:180px;
+}
+.search-box input::placeholder{color:var(--text-faint)}
+.filter-select{
+  font-family:'Inter',sans-serif;font-size:13px;
+  background:var(--surface);border:2px solid var(--border);
+  border-radius:3px;padding:5px 28px 5px 10px;
+  color:var(--text);cursor:pointer;outline:none;
+  appearance:none;
+  background-image:url("data:image/svg+xml,%3Csvg width='10' height='6' viewBox='0 0 10 6' fill='none' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M1 1l4 4 4-4' stroke='%235E6C84' stroke-width='1.5' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E");
+  background-repeat:no-repeat;background-position:right 8px center;
+  transition:border-color .1s;
+}
+.filter-select:focus{border-color:var(--blue)}
+.toolbar-right{margin-left:auto;display:flex;gap:8px}
+.btn-group{display:flex}
+.btn-view{
+  font-family:'Inter',sans-serif;font-size:12px;
+  background:var(--surface);border:1px solid var(--border);
+  padding:5px 10px;cursor:pointer;color:var(--text-muted);
+  transition:all .1s;display:flex;align-items:center;gap:4px;
+}
+.btn-view:first-child{border-radius:3px 0 0 3px}
+.btn-view:last-child{border-radius:0 3px 3px 0;border-left:none}
+.btn-view.active{background:var(--blue-bg);color:var(--blue-text);border-color:var(--blue);z-index:1}
+
+/* STATS ROW */
+.stats-row{
+  display:grid;grid-template-columns:repeat(4,1fr);gap:12px;
+  margin-bottom:20px;
+}
+.stat-card{
+  background:var(--surface);border:1px solid var(--border);
+  border-radius:3px;padding:14px 16px;
+}
+.stat-num{font-size:22px;font-weight:600;color:var(--text);line-height:1}
+.stat-label{font-size:12px;color:var(--text-muted);margin-top:4px}
+
+/* TABLE */
+.table-wrap{
+  background:var(--surface);
+  border:1px solid var(--border);
+  border-radius:3px;
+  overflow:hidden;
+}
+table{width:100%;border-collapse:collapse}
+thead tr{background:var(--surface2);border-bottom:2px solid var(--border)}
+th{
+  padding:8px 12px;
+  font-size:11px;font-weight:600;
+  color:var(--text-muted);
+  text-transform:uppercase;letter-spacing:.05em;
+  text-align:left;white-space:nowrap;
+  cursor:pointer;user-select:none;
+}
+th:hover{color:var(--text)}
+th .sort{opacity:.4;margin-left:3px;font-size:10px}
+tbody tr{border-bottom:1px solid var(--border);cursor:pointer;transition:background .08s}
+tbody tr:last-child{border-bottom:none}
+tbody tr:hover{background:#F8F9FA}
+tbody tr.selected{background:var(--blue-bg)}
+td{padding:10px 12px;font-size:13px;vertical-align:middle}
+.td-key{font-family:'Inter',sans-serif;font-size:12px;color:var(--blue);font-weight:500;white-space:nowrap}
+.td-title{color:var(--text);font-weight:400;max-width:320px}
+.td-title-inner{display:flex;flex-direction:column;gap:2px}
+.td-desc{font-size:11px;color:var(--text-muted);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;max-width:300px}
+
+.lozenge{
+  display:inline-flex;align-items:center;gap:4px;
+  font-size:11px;font-weight:600;
+  padding:2px 8px;border-radius:3px;
+  text-transform:uppercase;letter-spacing:.04em;
+  white-space:nowrap;
+}
+.dot{width:7px;height:7px;border-radius:50%;flex-shrink:0}
+.flag-badge{
+  display:inline-flex;align-items:center;gap:3px;
+  font-size:11px;font-weight:500;
+  padding:2px 6px;border-radius:3px;
+  background:var(--prio-high-bg);color:var(--prio-high-text);
+}
+.owner-chip{
+  display:inline-flex;align-items:center;gap:5px;
+  font-size:12px;color:var(--text-muted);
+}
+.owner-chip .av{
+  width:22px;height:22px;border-radius:50%;
+  font-size:9px;font-weight:600;
+  display:flex;align-items:center;justify-content:center;
+  flex-shrink:0;
+}
+.av-pm{background:#DEEBFF;color:#0052CC}
+.av-st{background:#E3FCEF;color:#006644}
+
+/* DETAIL PANEL */
+.detail-panel{
+  width:0;overflow:hidden;
+  border-left:1px solid var(--border);
+  background:var(--surface);
+  transition:width .2s ease;
+  flex-shrink:0;
+  display:flex;flex-direction:column;
+}
+.detail-panel.open{width:380px}
+.dp-header{
+  padding:16px 20px 12px;
+  border-bottom:1px solid var(--border);
+  display:flex;align-items:flex-start;justify-content:space-between;gap:8px;
+}
+.dp-key{font-size:12px;color:var(--blue);font-weight:600;margin-bottom:4px}
+.dp-title{font-size:15px;font-weight:600;color:var(--text);line-height:1.4}
+.btn-close-dp{
+  background:none;border:none;cursor:pointer;
+  color:var(--text-muted);padding:4px;border-radius:3px;
+  flex-shrink:0;transition:background .1s;
+}
+.btn-close-dp:hover{background:var(--surface2)}
+.dp-body{padding:0 20px 20px;overflow-y:auto;flex:1}
+.dp-section{padding:16px 0;border-bottom:1px solid var(--border)}
+.dp-section:last-child{border-bottom:none}
+.dp-row{display:flex;align-items:flex-start;gap:12px;margin-bottom:10px}
+.dp-row:last-child{margin-bottom:0}
+.dp-label{font-size:12px;color:var(--text-muted);width:110px;flex-shrink:0;padding-top:2px}
+.dp-value{font-size:13px;color:var(--text);flex:1;line-height:1.5}
+.dp-text-block{
+  background:var(--surface2);border-radius:3px;
+  padding:10px 12px;font-size:13px;color:var(--text-muted);
+  line-height:1.55;margin-top:4px;border-left:3px solid var(--border-strong);
+}
+.dp-actions{display:flex;flex-wrap:wrap;gap:6px;margin-top:12px}
+.btn-action{
+  font-family:'Inter',sans-serif;font-size:12px;font-weight:500;
+  padding:5px 10px;border-radius:3px;
+  border:1px solid var(--border);background:var(--surface);
+  color:var(--text-muted);cursor:pointer;transition:all .1s;
+}
+.btn-action:hover{background:var(--surface2);color:var(--text);border-color:var(--border-strong)}
+.btn-action.danger:hover{background:var(--prio-high-bg);color:var(--prio-high-text);border-color:var(--prio-high-dot)}
+
+/* MODAL */
+.modal-backdrop{
+  display:none;position:fixed;inset:0;
+  background:rgba(9,30,66,.54);z-index:200;
+  align-items:center;justify-content:center;padding:24px;
+}
+.modal-backdrop.open{display:flex}
+.modal{
+  background:var(--surface);border-radius:3px;
+  width:100%;max-width:580px;
+  max-height:90vh;overflow-y:auto;
+}
+.modal-header{
+  padding:20px 24px 16px;
+  border-bottom:1px solid var(--border);
+  display:flex;align-items:center;justify-content:space-between;
+}
+.modal-title{font-size:16px;font-weight:600;color:var(--text)}
+.btn-close-m{background:none;border:none;cursor:pointer;color:var(--text-muted);padding:4px;border-radius:3px;transition:background .1s}
+.btn-close-m:hover{background:var(--surface2)}
+.modal-body{padding:20px 24px;display:flex;flex-direction:column;gap:16px}
+.form-group{display:flex;flex-direction:column;gap:5px}
+.form-label{font-size:12px;font-weight:600;color:var(--text)}
+.form-label span{color:var(--text-muted);font-weight:400}
+input[type=text],textarea,select{
+  font-family:'Inter',sans-serif;font-size:13px;
+  background:var(--surface);
+  border:2px solid var(--border);border-radius:3px;
+  padding:7px 10px;color:var(--text);outline:none;
+  transition:border-color .1s;width:100%;resize:vertical;
+}
+input[type=text]:focus,textarea:focus,select:focus{border-color:var(--blue)}
+textarea{min-height:64px}
+.form-row{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+.prio-picker{display:grid;grid-template-columns:repeat(3,1fr);gap:8px}
+.prio-opt{
+  padding:10px;border:2px solid var(--border);border-radius:3px;
+  cursor:pointer;transition:all .12s;
+}
+.prio-opt:hover{border-color:var(--border-strong)}
+.prio-opt.sel-low{border-color:var(--prio-low-dot);background:var(--prio-low-bg)}
+.prio-opt.sel-mid{border-color:var(--prio-mid-dot);background:var(--prio-mid-bg)}
+.prio-opt.sel-high{border-color:var(--prio-high-dot);background:var(--prio-high-bg)}
+.prio-opt-name{font-size:12px;font-weight:600;color:var(--text)}
+.prio-opt-desc{font-size:11px;color:var(--text-muted);margin-top:3px;line-height:1.35}
+.modal-footer{
+  padding:14px 24px;border-top:1px solid var(--border);
+  display:flex;justify-content:flex-end;gap:8px;
+}
+.btn-secondary{
+  font-family:'Inter',sans-serif;font-size:13px;font-weight:500;
+  padding:7px 14px;border-radius:3px;
+  border:1px solid var(--border);background:transparent;
+  color:var(--text-muted);cursor:pointer;transition:all .1s;
+}
+.btn-secondary:hover{background:var(--surface2);color:var(--text)}
+
+@media(max-width:900px){
+  .sidebar{display:none}
+  .stats-row{grid-template-columns:1fr 1fr}
+  .detail-panel.open{width:100%;position:fixed;right:0;top:48px;bottom:0;z-index:50;border-left:none;border-top:1px solid var(--border)}
+}
+@media(max-width:600px){
+  .main{padding:16px}
+  .form-row,.prio-picker{grid-template-columns:1fr}
+}
+</style>
+</head>
+<body>
+
+<!-- TOP NAV -->
+<nav class="topnav">
+  <div class="topnav-logo">
+    <svg width="18" height="18" viewBox="0 0 18 18" fill="none"><rect width="18" height="18" rx="3" fill="#4C9AFF"/><path d="M9 3l2.5 4.5H11L9 11 7 7.5h-.5L9 3z" fill="white" opacity=".8"/><path d="M5 8l1.5 2.5L9 15l2.5-4.5L13 8" stroke="white" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round" fill="none"/></svg>
+    Risk Register
+  </div>
+  <div class="topnav-sep"></div>
+  <span class="topnav-item">Projekty</span>
+  <span class="topnav-item">Twoje zadania</span>
+  <div class="topnav-right">
+    <div class="avatar">PM</div>
+  </div>
+</nav>
+
+<div class="layout">
+<!-- SIDEBAR -->
+<aside class="sidebar">
+  <div class="sidebar-section">
+    <div style="padding:6px 8px;margin-bottom:8px">
+      <div style="font-size:13px;font-weight:600;color:#fff">Projekt Alpha</div>
+      <div style="font-size:11px;color:rgba(255,255,255,.5);margin-top:2px">Q2 2026</div>
+    </div>
+  </div>
+  <div class="sidebar-section">
+    <div class="sidebar-label">Planowanie</div>
+    <div class="sidebar-item">
+      <svg width="14" height="14" viewBox="0 0 14 14" fill="none"><rect x="1" y="1" width="5" height="5" rx="1" stroke="currentColor" stroke-width="1.3"/><rect x="8" y="1" width="5" height="5" rx="1" stroke="currentColor" stroke-width="1.3"/><rect x="1" y="8" width="5" height="5" rx="1" stroke="currentColor" stroke-width="1.3"/><rect x="8" y="8" width="5" height="5" rx="1" stroke="currentColor" stroke-width="1.3"/></svg>
+      Tablica
+    </div>
+    <div class="sidebar-item">
+      <svg width="14" height="14" viewBox="0 0 14 14" fill="none"><path d="M1 3h12M1 7h8M1 11h10" stroke="currentColor" stroke-width="1.3" stroke-linecap="round"/></svg>
+      Backlog
+    </div>
+    <div class="sidebar-item active">
+      <svg width="14" height="14" viewBox="0 0 14 14" fill="none"><path d="M2 7a5 5 0 1 0 10 0A5 5 0 0 0 2 7z" stroke="currentColor" stroke-width="1.3"/><path d="M7 4v3l2 2" stroke="currentColor" stroke-width="1.3" stroke-linecap="round"/></svg>
+      Rejestr ryzyk
+    </div>
+  </div>
+  <div class="sidebar-section">
+    <div class="sidebar-label">Raporty</div>
+    <div class="sidebar-item">
+      <svg width="14" height="14" viewBox="0 0 14 14" fill="none"><path d="M2 11V6l3-3 3 3 4-4" stroke="currentColor" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round"/></svg>
+      Postęp projektu
+    </div>
+  </div>
+  <div class="sidebar-section" style="margin-top:auto">
+    <div class="sidebar-label">Projekt</div>
+    <div class="sidebar-item">
+      <svg width="14" height="14" viewBox="0 0 14 14" fill="none"><circle cx="7" cy="7" r="5" stroke="currentColor" stroke-width="1.3"/><path d="M7 5v2l1.5 1.5" stroke="currentColor" stroke-width="1.3" stroke-linecap="round"/></svg>
+      Ustawienia projektu
+    </div>
+  </div>
+</aside>
+
+<!-- MAIN -->
+<main class="main" id="main">
+  <div class="page-header">
+    <div>
+      <div class="page-title">Rejestr ryzyk</div>
+      <div class="page-subtitle">Projekt Alpha · współdzielony przez PM i stakeholdera</div>
+    </div>
+    <button class="btn-primary" onclick="openModal()">
+      <svg width="12" height="12" viewBox="0 0 12 12" fill="none"><path d="M6 1v10M1 6h10" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg>
+      Dodaj ryzyko
+    </button>
+  </div>
+
+  <div class="stats-row" id="stats-row"></div>
+
+  <div class="toolbar">
+    <div class="search-box">
+      <svg width="14" height="14" viewBox="0 0 14 14" fill="none"><circle cx="6" cy="6" r="4.5" stroke="#97A0AF" stroke-width="1.3"/><path d="M10 10l2.5 2.5" stroke="#97A0AF" stroke-width="1.3" stroke-linecap="round"/></svg>
+      <input type="text" id="search-input" placeholder="Szukaj ryzyk..." oninput="render()">
+    </div>
+    <select class="filter-select" id="filter-status" onchange="render()">
+      <option value="">Wszystkie statusy</option>
+      <option value="otwarty">Otwarty</option>
+      <option value="w trakcie">W trakcie</option>
+      <option value="zamknięty">Zamknięty</option>
+      <option value="zmaterializowany">Zmaterializowany</option>
+      <option value="skipnięty">Skipnięty</option>
+    </select>
+    <select class="filter-select" id="filter-prio" onchange="render()">
+      <option value="">Wszystkie priorytety</option>
+      <option value="opóźni projekt">Opóźni projekt</option>
+      <option value="zagrozi deliverable">Zagrozi deliverable</option>
+      <option value="zatrzyma projekt">Zatrzyma projekt</option>
+    </select>
+    <select class="filter-select" id="filter-area" onchange="render()">
+      <option value="">Wszystkie obszary</option>
+      <option value="zakres">Zakres</option>
+      <option value="harmonogram">Harmonogram</option>
+      <option value="zespół">Zespół</option>
+      <option value="zasoby">Zasoby</option>
+      <option value="proces">Proces</option>
+    </select>
+  </div>
+
+  <div class="table-wrap">
+    <table>
+      <thead>
+        <tr>
+          <th style="width:80px">Klucz <span class="sort">↕</span></th>
+          <th>Ryzyko</th>
+          <th style="width:130px">Priorytet <span class="sort">↕</span></th>
+          <th style="width:110px">Status <span class="sort">↕</span></th>
+          <th style="width:90px">Obszar <span class="sort">↕</span></th>
+          <th style="width:110px">Właściciel</th>
+          <th style="width:80px">Dodał</th>
+        </tr>
+      </thead>
+      <tbody id="tbody"></tbody>
+    </table>
+  </div>
+</main>
+
+<!-- DETAIL PANEL -->
+<aside class="detail-panel" id="detail-panel">
+  <div class="dp-header">
+    <div>
+      <div class="dp-key" id="dp-key"></div>
+      <div class="dp-title" id="dp-title"></div>
+    </div>
+    <button class="btn-close-dp" onclick="closeDetail()">
+      <svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M12 4L4 12M4 4l8 8" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg>
+    </button>
+  </div>
+  <div class="dp-body" id="dp-body"></div>
+</aside>
+</div>
+
+<!-- MODAL -->
+<div class="modal-backdrop" id="modal-backdrop" onclick="closeModalOutside(event)">
+  <div class="modal">
+    <div class="modal-header">
+      <span class="modal-title" id="modal-title">Utwórz ryzyko</span>
+      <button class="btn-close-m" onclick="closeModal()">
+        <svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M12 4L4 12M4 4l8 8" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg>
+      </button>
+    </div>
+    <div class="modal-body">
+      <div class="form-group">
+        <label class="form-label">Tytuł ryzyka *</label>
+        <input type="text" id="f-title" placeholder="Krótki, opisowy tytuł">
+      </div>
+      <div class="form-group">
+        <label class="form-label">Opis <span>— jeżeli X, to…</span></label>
+        <textarea id="f-desc" placeholder="Jeżeli… to może nastąpić…"></textarea>
+      </div>
+      <div class="form-group">
+        <label class="form-label">Konsekwencja</label>
+        <textarea id="f-cons" placeholder="Co konkretnie się stanie i jaki będzie wpływ na projekt"></textarea>
+      </div>
+      <div class="form-group">
+        <label class="form-label">Priorytet *</label>
+        <div class="prio-picker">
+          <div class="prio-opt" data-prio="opóźni projekt" onclick="selectPrio(this)">
+            <div class="prio-opt-name">Opóźni projekt</div>
+            <div class="prio-opt-desc">Da się nadrobić, wynik bez zmian</div>
+          </div>
+          <div class="prio-opt" data-prio="zagrozi deliverable" onclick="selectPrio(this)">
+            <div class="prio-opt-name">Zagrozi deliverable</div>
+            <div class="prio-opt-desc">Ryzyko okrojenia lub niedostarczenia</div>
+          </div>
+          <div class="prio-opt" data-prio="zatrzyma projekt" onclick="selectPrio(this)">
+            <div class="prio-opt-name">Zatrzyma projekt</div>
+            <div class="prio-opt-desc">Blokada — projekt staje</div>
+          </div>
+        </div>
+      </div>
+      <div class="form-row">
+        <div class="form-group">
+          <label class="form-label">Obszar</label>
+          <select id="f-area">
+            <option value="zakres">Zakres</option>
+            <option value="harmonogram">Harmonogram</option>
+            <option value="zespół">Zespół</option>
+            <option value="zasoby">Zasoby</option>
+            <option value="proces">Proces</option>
+          </select>
+        </div>
+        <div class="form-group">
+          <label class="form-label">Dodaje</label>
+          <select id="f-author">
+            <option value="PM">PM</option>
+            <option value="Stakeholder">Stakeholder</option>
+          </select>
+        </div>
+      </div>
+      <div class="form-group">
+        <label class="form-label">Mitygacja</label>
+        <textarea id="f-mit" placeholder="Konkretny next step — kto, co, kiedy"></textarea>
+      </div>
+      <div class="form-row">
+        <div class="form-group">
+          <label class="form-label">Właściciel mitygacji</label>
+          <select id="f-owner">
+            <option value="PM">PM</option>
+            <option value="Stakeholder">Stakeholder</option>
+          </select>
+        </div>
+        <div class="form-group">
+          <label class="form-label">Wymaga catch-upu?</label>
+          <select id="f-flag">
+            <option value="nie">Nie</option>
+            <option value="tak">Tak</option>
+          </select>
+        </div>
+      </div>
+    </div>
+    <div class="modal-footer">
+      <button class="btn-secondary" onclick="closeModal()">Anuluj</button>
+      <button class="btn-primary" onclick="saveRisk()">Utwórz ryzyko</button>
+    </div>
+  </div>
+</div>
+
+<script>
+const PRIO={
+  'opóźni projekt':     {bg:'var(--prio-low-bg)', text:'var(--prio-low-text)', dot:'var(--prio-low-dot)', sel:'sel-low'},
+  'zagrozi deliverable':{bg:'var(--prio-mid-bg)', text:'var(--prio-mid-text)', dot:'var(--prio-mid-dot)', sel:'sel-mid'},
+  'zatrzyma projekt':   {bg:'var(--prio-high-bg)',text:'var(--prio-high-text)',dot:'var(--prio-high-dot)',sel:'sel-high'},
+};
+const STATUS={
+  'otwarty':         {bg:'var(--status-open-bg)',    text:'var(--status-open-text)'},
+  'w trakcie':       {bg:'var(--status-progress-bg)',text:'var(--status-progress-text)'},
+  'zamknięty':       {bg:'var(--status-done-bg)',    text:'var(--status-done-text)'},
+  'zmaterializowany':{bg:'var(--status-mat-bg)',     text:'var(--status-mat-text)'},
+  'skipnięty':       {bg:'var(--status-skip-bg)',    text:'var(--status-skip-text)'},
+};
+const AREA={
+  'zakres':      {bg:'var(--area-scope-bg)',text:'var(--area-scope-text)'},
+  'harmonogram': {bg:'var(--area-har-bg)',  text:'var(--area-har-text)'},
+  'zespół':      {bg:'var(--area-team-bg)', text:'var(--area-team-text)'},
+  'zasoby':      {bg:'var(--area-res-bg)',  text:'var(--area-res-text)'},
+  'proces':      {bg:'var(--area-proc-bg)', text:'var(--area-proc-text)'},
+};
+
+let risks=[
+  {id:2,key:'RR-2',title:'Pominięcie etapu analizy solution architecta',desc:'Jeżeli pominiemy analizę SA przed startem sprintu dev, to zespół może cofnąć projekt',cons:'Restart analizy, projekt uznany za nieprzemy­ślany — strata 2–3 tygodni',prio:'zatrzyma projekt',area:'zakres',author:'PM',mit:'Zaplanować sesję z SA przed startem sprintu. PM rezerwuje slot, stakeholder potwierdza priorytety.',owner:'PM',flag:'tak',status:'otwarty',added:'30 kwi 2026',changed:'—'},
+  {id:3,key:'RR-3',title:'Developer podbierany do innych projektów',desc:'Jeżeli developer zostanie przydzielony do innych zadań, zabraknie mocy przerobowych',cons:'Opóźnienie realizacji, ryzyko niedostarczenia zakresu w terminie',prio:'zagrozi deliverable',area:'zespół',author:'Stakeholder',mit:'Stakeholder formalnie zabezpiecza dedykację. PM monitoruje alokację co tydzień i eskaluje przy pierwszym sygnale.',owner:'Stakeholder',flag:'nie',status:'w trakcie',added:'30 kwi 2026',changed:'Stakeholder'},
+  {id:4,key:'RR-4',title:'Formularz rejestru zbyt ciężki w uzupełnianiu',desc:'Jeżeli formularz będzie skomplikowany, nikt nie będzie go regularnie wypełniał',cons:'Rejestr staje się martwy — brak danych, brak mitygacji, projekt nieprzewidywalny',prio:'zatrzyma projekt',area:'proces',author:'PM',mit:'Uprościć do minimum. PM i stakeholder testują formularz przed wdrożeniem i wspólnie decydują o formie.',owner:'PM',flag:'tak',status:'otwarty',added:'30 kwi 2026',changed:'Stakeholder'},
+  {id:5,key:'RR-5',title:'Opóźnienia w odpowiedziach między zespołami',desc:'Jeżeli któryś z zespołów będzie zwlekał z odpowiedzią, to pozostałe zespoły będą blokowane w pracy',cons:'Spadek płynności pracy, kumulacja blokad i realne zagrożenie dla timeline całego projektu',prio:'zagrozi deliverable',area:'proces',author:'PM',mit:'Ustalić SLA na odpowiedzi między zespołami (np. 24h). PM monitoruje blokery i eskaluje przy przekroczeniach.',owner:'PM',flag:'tak',status:'otwarty',added:'1 maj 2026',changed:'—'},
+  {id:6,key:'RR-6',title:'Brak wspólnego zrozumienia procesu',desc:'Jeżeli zespoły nie będą miały wspólnego spojrzenia na proces, mogą różnie interpretować wymagania',cons:'Niejednoznaczna implementacja, rozjazd między komponentami i konieczność reworku',prio:'zatrzyma projekt',area:'zakres',author:'PM',mit:'Zorganizować warsztat alignmentowy. Spisać i zatwierdzić flow procesu oraz edge case’y przed rozpoczęciem developmentu.',owner:'PM',flag:'tak',status:'otwarty',added:'1 maj 2026',changed:'—'},
+  {id:7,key:'RR-7',title:'Brak danych do endpointów dla Webcon',desc:'Jeżeli Webcon nie otrzyma wymaganych danych do endpointów, nie będzie w stanie poprawnie zasilić UI',cons:'Brak działania kluczowych funkcji UI, blokada testów i opóźnienie wdrożenia',prio:'zatrzyma projekt',area:'zasoby',author:'Stakeholder',mit:'Zdefiniować kontrakty API upfront. Backend dostarcza mocki danych, a Webcon rozpoczyna integrację równolegle.',owner:'Stakeholder',flag:'tak',status:'w trakcie',added:'1 maj 2026',changed:'Stakeholder'},
+  {id:8,key:'RR-8',title:'Niekompletne wymagania biznesowe',desc:'Jeżeli wymagania nie będą w pełni doprecyzowane, zespół może implementować błędne założenia',cons:'Rework, opóźnienia i potencjalne niedostarczenie wartości biznesowej',prio:'zagrozi deliverable',area:'zakres',author:'PM',mit:'Wprowadzić checkpointy akceptacji wymagań przez stakeholdera przed developmentem. Każdy feature musi mieć jasne acceptance criteria.',owner:'PM',flag:'nie',status:'otwarty',added:'1 maj 2026',changed:'—'},
+  {id:9,key:'RR-9',title:'Brak dostępności kluczowego stakeholdera',desc:'Jeżeli stakeholder nie będzie dostępny do szybkich decyzji, zespół może utknąć na blokadach',cons:'Opóźnienia decyzyjne, zatrzymanie prac i ryzyko przekroczenia terminów',prio:'opóźni projekt',area:'zespół',author:'PM',mit:'Zarezerwować cykliczne sloty decyzyjne. Ustalić zastępstwo decyzyjne na czas niedostępności.',owner:'Stakeholder',flag:'tak',status:'otwarty',added:'1 maj 2026',changed:'—'},
+  {id:10,key:'RR-10',title:'Brak środowiska testowego na czas',desc:'Jeżeli środowisko testowe nie będzie gotowe na czas, nie będzie możliwości walidacji rozwiązania',cons:'Opóźnienie testów, kumulacja błędów i ryzyko przesunięcia release’u',prio:'zagrozi deliverable',area:'harmonogram',author:'PM',mit:'Zarezerwować przygotowanie środowiska jako osobny task z ownerem. Monitorować gotowość przed startem testów.',owner:'PM',flag:'nie',status:'w trakcie',added:'1 maj 2026',changed:'PM'},
+];
+let nextId=5, nextKey=5;
+let selectedPrio='', editingId=null, selectedRow=null;
+
+function lozenge(text,cfg){
+  return `<span class="lozenge" style="background:${cfg.bg};color:${cfg.text}">${text}</span>`;
+}
+function prioLozenge(p){
+  const c=PRIO[p]||{};
+  return `<span class="lozenge" style="background:${c.bg};color:${c.text}"><span class="dot" style="background:${c.dot}"></span>${p}</span>`;
+}
+function ownerChip(o){
+  const cls=o==='PM'?'av-pm':'av-st';
+  const initials=o==='PM'?'PM':'ST';
+  return `<span class="owner-chip"><span class="av ${cls}">${initials}</span>${o}</span>`;
+}
+
+function getFiltered(){
+  const q=document.getElementById('search-input').value.toLowerCase();
+  const fs=document.getElementById('filter-status').value;
+  const fp=document.getElementById('filter-prio').value;
+  const fa=document.getElementById('filter-area').value;
+  return risks.filter(r=>{
+    if(q && !r.title.toLowerCase().includes(q) && !r.key.toLowerCase().includes(q)) return false;
+    if(fs && r.status!==fs) return false;
+    if(fp && r.prio!==fp) return false;
+    if(fa && r.area!==fa) return false;
+    return true;
+  });
+}
+
+function render(){
+  const filtered=getFiltered();
+  const tbody=document.getElementById('tbody');
+  if(!filtered.length){
+    tbody.innerHTML=`<tr><td colspan="7" style="text-align:center;padding:40px;color:var(--text-faint)">Brak ryzyk pasujących do filtrów</td></tr>`;
+  } else {
+    tbody.innerHTML=filtered.map(r=>{
+      const sel=selectedRow===r.id?' selected':'';
+      const flagHtml=r.flag==='tak'?`<span class="flag-badge">catch-up</span> `:'';
+      return `<tr class="${sel}" onclick="selectRisk(${r.id})">
+        <td class="td-key">${r.key}</td>
+        <td class="td-title"><div class="td-title-inner"><span>${flagHtml}${r.title}</span><span class="td-desc">${r.desc}</span></div></td>
+        <td>${prioLozenge(r.prio)}</td>
+        <td>${lozenge(r.status, STATUS[r.status]||{})}</td>
+        <td>${lozenge(r.area, AREA[r.area]||{})}</td>
+        <td>${ownerChip(r.owner)}</td>
+        <td><span style="font-size:12px;color:var(--text-muted)">${r.author}</span></td>
+      </tr>`;
+    }).join('');
+  }
+  renderStats();
+}
+
+function renderStats(){
+  const active=risks.filter(r=>r.status==='otwarty'||r.status==='w trakcie').length;
+  const blocking=risks.filter(r=>r.prio==='zatrzyma projekt'&&r.status!=='zamknięty'&&r.status!=='skipnięty').length;
+  const catchup=risks.filter(r=>r.flag==='tak'&&(r.status==='otwarty'||r.status==='w trakcie')).length;
+  const done=risks.filter(r=>r.status==='zamknięty'||r.status==='skipnięty').length;
+  document.getElementById('stats-row').innerHTML=`
+    <div class="stat-card"><div class="stat-num">${risks.length}</div><div class="stat-label">Wszystkich ryzyk</div></div>
+    <div class="stat-card"><div class="stat-num" style="color:var(--blue)">${active}</div><div class="stat-label">Aktywnych</div></div>
+    <div class="stat-card"><div class="stat-num" style="color:var(--prio-high-text)">${blocking}</div><div class="stat-label">Blokujących projekt</div></div>
+    <div class="stat-card"><div class="stat-num" style="color:var(--prio-mid-text)">${catchup}</div><div class="stat-label">Wymaga catch-upu</div></div>
+  `;
+}
+
+function selectRisk(id){
+  selectedRow=id;
+  const r=risks.find(x=>x.id===id);
+  if(!r) return;
+  render();
+
+  const nextStatuses={
+    'otwarty':          [['w trakcie','→ W trakcie'],['zamknięty','Zamknij'],['zmaterializowany','Zmaterializował się'],['skipnięty','Skipnij']],
+    'w trakcie':        [['zamknięty','Zamknij'],['zmaterializowany','Zmaterializował się']],
+    'zamknięty':        [['otwarty','Otwórz ponownie']],
+    'zmaterializowany': [['zamknięty','Archiwizuj']],
+    'skipnięty':        [['otwarty','Otwórz ponownie']],
+  };
+  const btns=(nextStatuses[r.status]||[]).map(([s,l])=>
+    `<button class="btn-action${s==='zmaterializowany'?' danger':''}" onclick="changeStatus(${r.id},'${s}')">${l}</button>`
+  ).join('');
+
+  document.getElementById('dp-key').textContent=r.key;
+  document.getElementById('dp-title').textContent=r.title;
+  document.getElementById('dp-body').innerHTML=`
+    <div class="dp-section">
+      <div class="dp-row"><span class="dp-label">Status</span><span class="dp-value">${lozenge(r.status,STATUS[r.status]||{})}</span></div>
+      <div class="dp-row"><span class="dp-label">Priorytet</span><span class="dp-value">${prioLozenge(r.prio)}</span></div>
+      <div class="dp-row"><span class="dp-label">Obszar</span><span class="dp-value">${lozenge(r.area,AREA[r.area]||{})}</span></div>
+      <div class="dp-row"><span class="dp-label">Właściciel</span><span class="dp-value">${ownerChip(r.owner)}</span></div>
+      <div class="dp-row"><span class="dp-label">Dodał</span><span class="dp-value">${ownerChip(r.author)}</span></div>
+      ${r.flag==='tak'?`<div class="dp-row"><span class="dp-label">Catch-up</span><span class="dp-value"><span class="flag-badge">wymaga omówienia</span></span></div>`:''}
+    </div>
+    <div class="dp-section">
+      <div style="font-size:11px;font-weight:600;color:var(--text-muted);letter-spacing:.05em;text-transform:uppercase;margin-bottom:8px">Opis</div>
+      <div class="dp-text-block">${r.desc}</div>
+    </div>
+    <div class="dp-section">
+      <div style="font-size:11px;font-weight:600;color:var(--text-muted);letter-spacing:.05em;text-transform:uppercase;margin-bottom:8px">Konsekwencja</div>
+      <div class="dp-text-block">${r.cons}</div>
+    </div>
+    <div class="dp-section">
+      <div style="font-size:11px;font-weight:600;color:var(--text-muted);letter-spacing:.05em;text-transform:uppercase;margin-bottom:8px">Mitygacja</div>
+      <div class="dp-text-block">${r.mit}</div>
+      <div style="font-size:12px;color:var(--text-faint);margin-top:6px">właściciel: ${r.owner}</div>
+    </div>
+    <div class="dp-section">
+      <div style="font-size:11px;font-weight:600;color:var(--text-muted);letter-spacing:.05em;text-transform:uppercase;margin-bottom:8px">Akcje</div>
+      <div class="dp-actions">
+        <button class="btn-action" onclick="editRisk(${r.id})">Edytuj</button>
+        ${btns}
+      </div>
+    </div>
+    <div style="padding:12px 0 4px;font-size:11px;color:var(--text-faint)">
+      Dodano: ${r.added} przez ${r.author}${r.changed&&r.changed!=='—'?' · Zmienione przez: '+r.changed:''}
+    </div>
+  `;
+  document.getElementById('detail-panel').classList.add('open');
+}
+
+function closeDetail(){
+  selectedRow=null;
+  document.getElementById('detail-panel').classList.remove('open');
+  render();
+}
+
+function changeStatus(id,status){
+  const r=risks.find(x=>x.id===id);
+  if(r){r.status=status;r.changed='teraz';}
+  selectRisk(id);
+}
+
+function selectPrio(el){
+  document.querySelectorAll('.prio-opt').forEach(o=>o.className='prio-opt');
+  selectedPrio=el.dataset.prio;
+  el.classList.add(PRIO[selectedPrio]?.sel||'');
+}
+
+function openModal(){
+  editingId=null;
+  document.getElementById('modal-title').textContent='Utwórz ryzyko';
+  ['f-title','f-desc','f-cons','f-mit'].forEach(id=>document.getElementById(id).value='');
+  document.getElementById('f-area').value='zakres';
+  document.getElementById('f-author').value='PM';
+  document.getElementById('f-owner').value='PM';
+  document.getElementById('f-flag').value='nie';
+  document.querySelectorAll('.prio-opt').forEach(o=>o.className='prio-opt');
+  selectedPrio='';
+  document.getElementById('modal-backdrop').classList.add('open');
+}
+
+function editRisk(id){
+  const r=risks.find(x=>x.id===id);
+  if(!r)return;
+  editingId=id;
+  document.getElementById('modal-title').textContent='Edytuj ryzyko';
+  document.getElementById('f-title').value=r.title;
+  document.getElementById('f-desc').value=r.desc;
+  document.getElementById('f-cons').value=r.cons;
+  document.getElementById('f-mit').value=r.mit;
+  document.getElementById('f-area').value=r.area;
+  document.getElementById('f-author').value=r.author;
+  document.getElementById('f-owner').value=r.owner;
+  document.getElementById('f-flag').value=r.flag;
+  document.querySelectorAll('.prio-opt').forEach(o=>{
+    o.className='prio-opt';
+    if(o.dataset.prio===r.prio)o.classList.add(PRIO[r.prio]?.sel||'');
+  });
+  selectedPrio=r.prio;
+  document.getElementById('modal-backdrop').classList.add('open');
+}
+
+function closeModal(){document.getElementById('modal-backdrop').classList.remove('open')}
+function closeModalOutside(e){if(e.target===document.getElementById('modal-backdrop'))closeModal()}
+
+function saveRisk(){
+  const title=document.getElementById('f-title').value.trim();
+  if(!title){alert('Wpisz tytuł ryzyka.');return;}
+  if(!selectedPrio){alert('Wybierz priorytet.');return;}
+  const data={
+    title,
+    desc:document.getElementById('f-desc').value.trim(),
+    cons:document.getElementById('f-cons').value.trim(),
+    prio:selectedPrio,
+    area:document.getElementById('f-area').value,
+    author:document.getElementById('f-author').value,
+    mit:document.getElementById('f-mit').value.trim(),
+    owner:document.getElementById('f-owner').value,
+    flag:document.getElementById('f-flag').value,
+  };
+  if(editingId){
+    const idx=risks.findIndex(x=>x.id===editingId);
+    if(idx>=0){risks[idx]={...risks[idx],...data,changed:data.author};}
+    closeModal();selectRisk(editingId);
+  } else {
+    const now=new Date().toLocaleDateString('pl-PL',{day:'numeric',month:'short',year:'numeric'});
+    const nr={id:nextId,key:'RR-'+nextKey,...data,status:'otwarty',added:now,changed:'—'};
+    nextId++;nextKey++;
+    risks.unshift(nr);
+    closeModal();render();
+  }
+}
+
+render();
+</script>
+</body>
+</html>

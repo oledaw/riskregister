@@ -521,8 +521,6 @@ textarea{min-height:64px}
     Risk Register
   </div>
   <div class="topnav-sep"></div>
-  <span class="topnav-item">Projekty</span>
-  <span class="topnav-item">Twoje zadania</span>
   <div class="topnav-right">
     <button class="btn-tutorial" onclick="startTour()">
       <svg width="13" height="13" viewBox="0 0 13 13" fill="none"><circle cx="6.5" cy="6.5" r="5.5" stroke="currentColor" stroke-width="1.3"/><path d="M6.5 9V6.5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/><circle cx="6.5" cy="4.5" r=".75" fill="currentColor"/></svg>
@@ -615,8 +613,8 @@ textarea{min-height:64px}
         <label>Priorytet</label>
         <select id="filter-prio" onchange="render()">
           <option value="">Wszystkie</option>
-          <option value="opóźni projekt">Opóźni projekt</option>
-          <option value="zagrozi deliverable">Zagrozi deliverable</option>
+          <option value="przesuwa termin">Przesuwa termin</option>
+          <option value="psuje rezultat">Psuje rezultat</option>
           <option value="zatrzyma projekt">Zatrzyma projekt</option>
         </select>
       </div>
@@ -697,13 +695,13 @@ textarea{min-height:64px}
       <div class="form-group">
         <label class="form-label">Efekt *</label>
         <div class="prio-picker">
-          <div class="prio-opt" data-prio="opóźni projekt" onclick="selectPrio(this)">
-            <div class="prio-opt-name">Opóźni projekt</div>
-            <div class="prio-opt-desc">Termin realizacji przesunie się. Rezultaty pozostną bez zmian</div>
+          <div class="prio-opt" data-prio="przesuwa termin" onclick="selectPrio(this)">
+            <div class="prio-opt-name">Przesuwa termin</div>
+            <div class="prio-opt-desc">Termin się przesunie, ale rezultat zostanie utrzymany</div>
           </div>
-          <div class="prio-opt" data-prio="zagrozi deliverable" onclick="selectPrio(this)">
-            <div class="prio-opt-name">Zagrozi rezultatom</div>
-            <div class="prio-opt-desc">Rezultaty projektu zmienią się</div>
+          <div class="prio-opt" data-prio="psuje rezultat" onclick="selectPrio(this)">
+            <div class="prio-opt-name">Psuje rezultat</div>
+            <div class="prio-opt-desc">Dowieziemy coś innego lub gorszego niż zakładaliśmy</div>
           </div>
           <div class="prio-opt" data-prio="zatrzyma projekt" onclick="selectPrio(this)">
             <div class="prio-opt-name">Zatrzyma projekt</div>
@@ -780,8 +778,8 @@ textarea{min-height:64px}
    DATA & LOOKUPS
    ============================================================ */
 const PRIO={
-  'opóźni projekt':     {bg:'var(--prio-low-bg)', text:'var(--prio-low-text)', dot:'var(--prio-low-dot)', sel:'sel-low'},
-  'zagrozi deliverable':{bg:'var(--prio-mid-bg)', text:'var(--prio-mid-text)', dot:'var(--prio-mid-dot)', sel:'sel-mid'},
+  'przesuwa termin':     {bg:'var(--prio-low-bg)', text:'var(--prio-low-text)', dot:'var(--prio-low-dot)', sel:'sel-low'},
+  'psuje rezultat': {bg:'var(--prio-mid-bg)', text:'var(--prio-mid-text)', dot:'var(--prio-mid-dot)', sel:'sel-mid'},
   'zatrzyma projekt':   {bg:'var(--prio-high-bg)',text:'var(--prio-high-text)',dot:'var(--prio-high-dot)',sel:'sel-high'},
 };
 const STATUS={
@@ -801,14 +799,14 @@ const AREA={
 
 let risks=[
   {id:2,key:'RR-1',title:'Projekt cofnięty do analizy technicznej',desc:'Jeżeli pominiemy analizę Solution Architecta przed startem fazy dev, to zespół może chcieć cofnąć projekt',cons:'Restart analizy, koncepcja PM-a zostanie uznana za nieprzemyślaną — strata 2–3 tygodni',prio:'zatrzyma projekt',area:'zakres',author:'PM',mit:'Zaplanować sesję z SA przed startem sprintu. PM rezerwuje slot, stakeholder potwierdza priorytety.',owner:'PM',flag:'tak',status:'otwarty',added:'30 kwi 2026',changed:'—'},
-  {id:3,key:'RR-2',title:'Developer podbierany do innych projektów',desc:'Jeżeli developer zostanie przydzielony do innych zadań, zabraknie mocy przerobowych',cons:'Opóźnienie realizacji, ryzyko niedostarczenia projektu X w terminie',prio:'zagrozi deliverable',area:'zespół',author:'Stakeholder',mit:'Stakeholder formalnie zabezpiecza dedykację. PM monitoruje alokację co tydzień i eskaluje przy pierwszym sygnale.',owner:'Stakeholder',flag:'nie',status:'w trakcie',added:'30 kwi 2026',changed:'Stakeholder'},
+  {id:3,key:'RR-2',title:'Developer podbierany do innych projektów',desc:'Jeżeli developer zostanie przydzielony do innych zadań, zabraknie mocy przerobowych',cons:'Opóźnienie realizacji, ryzyko niedostarczenia projektu X w terminie',prio:'psuje rezultat',area:'zespół',author:'Stakeholder',mit:'Stakeholder formalnie zabezpiecza dedykację. PM monitoruje alokację co tydzień i eskaluje przy pierwszym sygnale.',owner:'Stakeholder',flag:'nie',status:'w trakcie',added:'30 kwi 2026',changed:'Stakeholder'},
   {id:4,key:'RR-3',title:'Formularz rejestru zbyt ciężki w uzupełnianiu',desc:'Jeżeli formularz będzie skomplikowany, nikt nie będzie go regularnie wypełniał',cons:'Rejestr staje się martwy — brak danych, brak mitygacji, projekt nieprzewidywalny',prio:'zatrzyma projekt',area:'proces',author:'PM',mit:'Uprościć do minimum. PM i stakeholder testują formularz przed wdrożeniem i wspólnie decydują o formie.',owner:'PM',flag:'tak',status:'otwarty',added:'30 kwi 2026',changed:'Stakeholder'},
-  {id:5,key:'RR-4',title:'Opóźnienia w odpowiedziach między zespołami',desc:'Jeżeli któryś z zespołów będzie zwlekał z odpowiedzią, to pozostałe zespoły będą blokowane w pracy',cons:'Spadek płynności pracy, kumulacja blokad i realne zagrożenie dla timeline całego projektu',prio:'zagrozi deliverable',area:'proces',author:'PM',mit:'Ustalić SLA na odpowiedzi między zespołami (np. 24h). PM monitoruje blokery i eskaluje przy przekroczeniach.',owner:'PM',flag:'tak',status:'otwarty',added:'1 maj 2026',changed:'—'},
+  {id:5,key:'RR-4',title:'Opóźnienia w odpowiedziach między zespołami',desc:'Jeżeli któryś z zespołów będzie zwlekał z odpowiedzią, to pozostałe zespoły będą blokowane w pracy',cons:'Spadek płynności pracy, kumulacja blokad i realne zagrożenie dla timeline całego projektu',prio:'psuje rezultat',area:'proces',author:'PM',mit:'Ustalić SLA na odpowiedzi między zespołami (np. 24h). PM monitoruje blokery i eskaluje przy przekroczeniach.',owner:'PM',flag:'tak',status:'otwarty',added:'1 maj 2026',changed:'—'},
   {id:6,key:'RR-5',title:'Brak wspólnego zrozumienia procesu',desc:'Jeżeli zespoły nie będą miały wspólnego spojrzenia na proces, mogą różnie interpretować wymagania',cons:'Niejednoznaczna implementacja, rozjazd między komponentami i konieczność reworku',prio:'zatrzyma projekt',area:'zakres',author:'PM',mit:'Zorganizować warsztat alignmentowy. Spisać i zatwierdzić flow procesu oraz edge case\'y przed rozpoczęciem developmentu.',owner:'PM',flag:'tak',status:'otwarty',added:'1 maj 2026',changed:'—'},
   {id:7,key:'RR-6',title:'Brak danych do endpointów dla Webcon',desc:'Jeżeli Webcon nie otrzyma wymaganych danych do endpointów, nie będzie w stanie poprawnie zasilić UI',cons:'Brak działania kluczowych funkcji UI, blokada testów i opóźnienie wdrożenia',prio:'zatrzyma projekt',area:'zasoby',author:'Stakeholder',mit:'Zdefiniować kontrakty API upfront. Backend dostarcza mocki danych, a Webcon rozpoczyna integrację równolegle.',owner:'Stakeholder',flag:'tak',status:'w trakcie',added:'1 maj 2026',changed:'Stakeholder'},
-  {id:8,key:'RR-7',title:'Feature X nie spełnia oczekiwań, potrzebne dodatkowe zmiany',desc:'Jeżeli wymagania nie będą w pełni doprecyzowane, zespół może implementować błędne założenia',cons:'Rework, opóźnienia i potencjalne niedostarczenie wartości biznesowej',prio:'zagrozi deliverable',area:'zakres',author:'PM',mit:'Wprowadzić checkpointy akceptacji wymagań przez stakeholdera przed developmentem. Każdy feature musi mieć jasne acceptance criteria.',owner:'PM',flag:'nie',status:'otwarty',added:'1 maj 2026',changed:'—'},
-  {id:9,key:'RR-8',title:'Brak dostępności kluczowego stakeholdera',desc:'Jeżeli stakeholder nie będzie dostępny do szybkich decyzji, zespół może utknąć na blokadach',cons:'Opóźnienia decyzyjne, zatrzymanie prac i ryzyko przekroczenia terminów',prio:'opóźni projekt',area:'zespół',author:'PM',mit:'Zarezerwować cykliczne sloty decyzyjne. Ustalić zastępstwo decyzyjne na czas niedostępności.',owner:'Stakeholder',flag:'tak',status:'otwarty',added:'1 maj 2026',changed:'—'},
-  {id:10,key:'RR-9',title:'Brak środowiska testowego na czas',desc:'Jeżeli środowisko testowe nie będzie gotowe na czas, nie będzie możliwości walidacji rozwiązania',cons:'Opóźnienie testów, kumulacja błędów i ryzyko przesunięcia release\'u',prio:'zagrozi deliverable',area:'harmonogram',author:'PM',mit:'Zarezerwować przygotowanie środowiska jako osobny task z ownerem. Monitorować gotowość przed startem testów.',owner:'PM',flag:'nie',status:'w trakcie',added:'1 maj 2026',changed:'PM'},
+  {id:8,key:'RR-7',title:'Feature X nie spełnia oczekiwań, potrzebne dodatkowe zmiany',desc:'Jeżeli wymagania nie będą w pełni doprecyzowane, zespół może implementować błędne założenia',cons:'Rework, opóźnienia i potencjalne niedostarczenie wartości biznesowej',prio:'psuje rezultat',area:'zakres',author:'PM',mit:'Wprowadzić checkpointy akceptacji wymagań przez stakeholdera przed developmentem. Każdy feature musi mieć jasne acceptance criteria.',owner:'PM',flag:'nie',status:'otwarty',added:'1 maj 2026',changed:'—'},
+  {id:9,key:'RR-8',title:'Brak dostępności kluczowego stakeholdera',desc:'Jeżeli stakeholder nie będzie dostępny do szybkich decyzji, zespół może utknąć na blokadach',cons:'Opóźnienia decyzyjne, zatrzymanie prac i ryzyko przekroczenia terminów',prio:'przesuwa termin',area:'zespół',author:'PM',mit:'Zarezerwować cykliczne sloty decyzyjne. Ustalić zastępstwo decyzyjne na czas niedostępności.',owner:'Stakeholder',flag:'tak',status:'otwarty',added:'1 maj 2026',changed:'—'},
+  {id:10,key:'RR-9',title:'Brak środowiska testowego na czas',desc:'Jeżeli środowisko testowe nie będzie gotowe na czas, nie będzie możliwości walidacji rozwiązania',cons:'Opóźnienie testów, kumulacja błędów i ryzyko przesunięcia release\'u',prio:'psuje rezultat',area:'harmonogram',author:'PM',mit:'Zarezerwować przygotowanie środowiska jako osobny task z ownerem. Monitorować gotowość przed startem testów.',owner:'PM',flag:'nie',status:'w trakcie',added:'1 maj 2026',changed:'PM'},
 ];
 
 let selectedPrio='', editingId=null, selectedRow=null;
@@ -842,7 +840,14 @@ function getFiltered(){
   const fp=document.getElementById('filter-prio').value;
   const fa=document.getElementById('filter-area').value;
   let data=risks.filter(r=>{
-    if(q&&!r.title.toLowerCase().includes(q)&&!r.key.toLowerCase().includes(q))return false;
+    if (
+      q &&
+      !r.title.toLowerCase().includes(q) &&
+      !r.key.toLowerCase().includes(q) &&
+      !r.desc.toLowerCase().includes(q) &&
+      !r.cons.toLowerCase().includes(q) &&
+      !r.mit.toLowerCase().includes(q)
+    ) return false;
     if(fs&&r.status!==fs)return false;
     if(fp&&r.prio!==fp)return false;
     if(fa&&r.area!==fa)return false;
@@ -861,7 +866,7 @@ function getSorted(data){
     switch(sortState.field){
       case 'key':return(parseInt(a.key.split('-')[1])-parseInt(b.key.split('-')[1]))*dir;
       case 'title':return((b.flag==='tak'?1:0)-(a.flag==='tak'?1:0))*dir;
-      case 'prio':const po={'zatrzyma projekt':3,'zagrozi deliverable':2,'opóźni projekt':1};return(po[b.prio]-po[a.prio])*dir;
+      case 'prio':const po={'zatrzyma projekt':3,'psuje rezultat':2,'przesuwa termin':1};return(po[b.prio]-po[a.prio])*dir;
       case 'status':const so={'otwarty':1,'w trakcie':2,'zamknięty':3,'zmaterializowany':4,'skipnięty':5};return(so[a.status]-so[b.status])*dir;
       case 'area':return a.area.localeCompare(b.area)*dir;
       case 'owner':return a.owner.localeCompare(b.owner)*dir;

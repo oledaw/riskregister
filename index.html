@@ -574,17 +574,17 @@ const AREA={
 };
 
 let risks=[
-  {id:2,key:'RR-2',title:'Pominięcie etapu analizy solution architecta',desc:'Jeżeli pominiemy analizę SA przed startem sprintu dev, to zespół może cofnąć projekt',cons:'Restart analizy, projekt uznany za nieprzemy­ślany — strata 2–3 tygodni',prio:'zatrzyma projekt',area:'zakres',author:'PM',mit:'Zaplanować sesję z SA przed startem sprintu. PM rezerwuje slot, stakeholder potwierdza priorytety.',owner:'PM',flag:'tak',status:'otwarty',added:'30 kwi 2026',changed:'—'},
-  {id:3,key:'RR-3',title:'Developer podbierany do innych projektów',desc:'Jeżeli developer zostanie przydzielony do innych zadań, zabraknie mocy przerobowych',cons:'Opóźnienie realizacji, ryzyko niedostarczenia zakresu w terminie',prio:'zagrozi deliverable',area:'zespół',author:'Stakeholder',mit:'Stakeholder formalnie zabezpiecza dedykację. PM monitoruje alokację co tydzień i eskaluje przy pierwszym sygnale.',owner:'Stakeholder',flag:'nie',status:'w trakcie',added:'30 kwi 2026',changed:'Stakeholder'},
-  {id:4,key:'RR-4',title:'Formularz rejestru zbyt ciężki w uzupełnianiu',desc:'Jeżeli formularz będzie skomplikowany, nikt nie będzie go regularnie wypełniał',cons:'Rejestr staje się martwy — brak danych, brak mitygacji, projekt nieprzewidywalny',prio:'zatrzyma projekt',area:'proces',author:'PM',mit:'Uprościć do minimum. PM i stakeholder testują formularz przed wdrożeniem i wspólnie decydują o formie.',owner:'PM',flag:'tak',status:'otwarty',added:'30 kwi 2026',changed:'Stakeholder'},
-  {id:5,key:'RR-5',title:'Opóźnienia w odpowiedziach między zespołami',desc:'Jeżeli któryś z zespołów będzie zwlekał z odpowiedzią, to pozostałe zespoły będą blokowane w pracy',cons:'Spadek płynności pracy, kumulacja blokad i realne zagrożenie dla timeline całego projektu',prio:'zagrozi deliverable',area:'proces',author:'PM',mit:'Ustalić SLA na odpowiedzi między zespołami (np. 24h). PM monitoruje blokery i eskaluje przy przekroczeniach.',owner:'PM',flag:'tak',status:'otwarty',added:'1 maj 2026',changed:'—'},
-  {id:6,key:'RR-6',title:'Brak wspólnego zrozumienia procesu',desc:'Jeżeli zespoły nie będą miały wspólnego spojrzenia na proces, mogą różnie interpretować wymagania',cons:'Niejednoznaczna implementacja, rozjazd między komponentami i konieczność reworku',prio:'zatrzyma projekt',area:'zakres',author:'PM',mit:'Zorganizować warsztat alignmentowy. Spisać i zatwierdzić flow procesu oraz edge case’y przed rozpoczęciem developmentu.',owner:'PM',flag:'tak',status:'otwarty',added:'1 maj 2026',changed:'—'},
-  {id:7,key:'RR-7',title:'Brak danych do endpointów dla Webcon',desc:'Jeżeli Webcon nie otrzyma wymaganych danych do endpointów, nie będzie w stanie poprawnie zasilić UI',cons:'Brak działania kluczowych funkcji UI, blokada testów i opóźnienie wdrożenia',prio:'zatrzyma projekt',area:'zasoby',author:'Stakeholder',mit:'Zdefiniować kontrakty API upfront. Backend dostarcza mocki danych, a Webcon rozpoczyna integrację równolegle.',owner:'Stakeholder',flag:'tak',status:'w trakcie',added:'1 maj 2026',changed:'Stakeholder'},
-  {id:8,key:'RR-8',title:'Niekompletne wymagania biznesowe',desc:'Jeżeli wymagania nie będą w pełni doprecyzowane, zespół może implementować błędne założenia',cons:'Rework, opóźnienia i potencjalne niedostarczenie wartości biznesowej',prio:'zagrozi deliverable',area:'zakres',author:'PM',mit:'Wprowadzić checkpointy akceptacji wymagań przez stakeholdera przed developmentem. Każdy feature musi mieć jasne acceptance criteria.',owner:'PM',flag:'nie',status:'otwarty',added:'1 maj 2026',changed:'—'},
-  {id:9,key:'RR-9',title:'Brak dostępności kluczowego stakeholdera',desc:'Jeżeli stakeholder nie będzie dostępny do szybkich decyzji, zespół może utknąć na blokadach',cons:'Opóźnienia decyzyjne, zatrzymanie prac i ryzyko przekroczenia terminów',prio:'opóźni projekt',area:'zespół',author:'PM',mit:'Zarezerwować cykliczne sloty decyzyjne. Ustalić zastępstwo decyzyjne na czas niedostępności.',owner:'Stakeholder',flag:'tak',status:'otwarty',added:'1 maj 2026',changed:'—'},
-  {id:10,key:'RR-10',title:'Brak środowiska testowego na czas',desc:'Jeżeli środowisko testowe nie będzie gotowe na czas, nie będzie możliwości walidacji rozwiązania',cons:'Opóźnienie testów, kumulacja błędów i ryzyko przesunięcia release’u',prio:'zagrozi deliverable',area:'harmonogram',author:'PM',mit:'Zarezerwować przygotowanie środowiska jako osobny task z ownerem. Monitorować gotowość przed startem testów.',owner:'PM',flag:'nie',status:'w trakcie',added:'1 maj 2026',changed:'PM'},
+  {id:2,key:'RR-1',title:'Pominięcie etapu analizy solution architecta',desc:'Jeżeli pominiemy analizę SA przed startem sprintu dev, to zespół może cofnąć projekt',cons:'Restart analizy, projekt uznany za nieprzemy­ślany — strata 2–3 tygodni',prio:'zatrzyma projekt',area:'zakres',author:'PM',mit:'Zaplanować sesję z SA przed startem sprintu. PM rezerwuje slot, stakeholder potwierdza priorytety.',owner:'PM',flag:'tak',status:'otwarty',added:'30 kwi 2026',changed:'—'},
+  {id:3,key:'RR-2',title:'Developer podbierany do innych projektów',desc:'Jeżeli developer zostanie przydzielony do innych zadań, zabraknie mocy przerobowych',cons:'Opóźnienie realizacji, ryzyko niedostarczenia zakresu w terminie',prio:'zagrozi deliverable',area:'zespół',author:'Stakeholder',mit:'Stakeholder formalnie zabezpiecza dedykację. PM monitoruje alokację co tydzień i eskaluje przy pierwszym sygnale.',owner:'Stakeholder',flag:'nie',status:'w trakcie',added:'30 kwi 2026',changed:'Stakeholder'},
+  {id:4,key:'RR-3',title:'Formularz rejestru zbyt ciężki w uzupełnianiu',desc:'Jeżeli formularz będzie skomplikowany, nikt nie będzie go regularnie wypełniał',cons:'Rejestr staje się martwy — brak danych, brak mitygacji, projekt nieprzewidywalny',prio:'zatrzyma projekt',area:'proces',author:'PM',mit:'Uprościć do minimum. PM i stakeholder testują formularz przed wdrożeniem i wspólnie decydują o formie.',owner:'PM',flag:'tak',status:'otwarty',added:'30 kwi 2026',changed:'Stakeholder'},
+  {id:5,key:'RR-4',title:'Opóźnienia w odpowiedziach między zespołami',desc:'Jeżeli któryś z zespołów będzie zwlekał z odpowiedzią, to pozostałe zespoły będą blokowane w pracy',cons:'Spadek płynności pracy, kumulacja blokad i realne zagrożenie dla timeline całego projektu',prio:'zagrozi deliverable',area:'proces',author:'PM',mit:'Ustalić SLA na odpowiedzi między zespołami (np. 24h). PM monitoruje blokery i eskaluje przy przekroczeniach.',owner:'PM',flag:'tak',status:'otwarty',added:'1 maj 2026',changed:'—'},
+  {id:6,key:'RR-5',title:'Brak wspólnego zrozumienia procesu',desc:'Jeżeli zespoły nie będą miały wspólnego spojrzenia na proces, mogą różnie interpretować wymagania',cons:'Niejednoznaczna implementacja, rozjazd między komponentami i konieczność reworku',prio:'zatrzyma projekt',area:'zakres',author:'PM',mit:'Zorganizować warsztat alignmentowy. Spisać i zatwierdzić flow procesu oraz edge case’y przed rozpoczęciem developmentu.',owner:'PM',flag:'tak',status:'otwarty',added:'1 maj 2026',changed:'—'},
+  {id:7,key:'RR-6',title:'Brak danych do endpointów dla Webcon',desc:'Jeżeli Webcon nie otrzyma wymaganych danych do endpointów, nie będzie w stanie poprawnie zasilić UI',cons:'Brak działania kluczowych funkcji UI, blokada testów i opóźnienie wdrożenia',prio:'zatrzyma projekt',area:'zasoby',author:'Stakeholder',mit:'Zdefiniować kontrakty API upfront. Backend dostarcza mocki danych, a Webcon rozpoczyna integrację równolegle.',owner:'Stakeholder',flag:'tak',status:'w trakcie',added:'1 maj 2026',changed:'Stakeholder'},
+  {id:8,key:'RR-7',title:'Niekompletne wymagania biznesowe',desc:'Jeżeli wymagania nie będą w pełni doprecyzowane, zespół może implementować błędne założenia',cons:'Rework, opóźnienia i potencjalne niedostarczenie wartości biznesowej',prio:'zagrozi deliverable',area:'zakres',author:'PM',mit:'Wprowadzić checkpointy akceptacji wymagań przez stakeholdera przed developmentem. Każdy feature musi mieć jasne acceptance criteria.',owner:'PM',flag:'nie',status:'otwarty',added:'1 maj 2026',changed:'—'},
+  {id:9,key:'RR-8',title:'Brak dostępności kluczowego stakeholdera',desc:'Jeżeli stakeholder nie będzie dostępny do szybkich decyzji, zespół może utknąć na blokadach',cons:'Opóźnienia decyzyjne, zatrzymanie prac i ryzyko przekroczenia terminów',prio:'opóźni projekt',area:'zespół',author:'PM',mit:'Zarezerwować cykliczne sloty decyzyjne. Ustalić zastępstwo decyzyjne na czas niedostępności.',owner:'Stakeholder',flag:'tak',status:'otwarty',added:'1 maj 2026',changed:'—'},
+  {id:10,key:'RR-9',title:'Brak środowiska testowego na czas',desc:'Jeżeli środowisko testowe nie będzie gotowe na czas, nie będzie możliwości walidacji rozwiązania',cons:'Opóźnienie testów, kumulacja błędów i ryzyko przesunięcia release’u',prio:'zagrozi deliverable',area:'harmonogram',author:'PM',mit:'Zarezerwować przygotowanie środowiska jako osobny task z ownerem. Monitorować gotowość przed startem testów.',owner:'PM',flag:'nie',status:'w trakcie',added:'1 maj 2026',changed:'PM'},
 ];
-let nextId=5, nextKey=5;
+
 let selectedPrio='', editingId=null, selectedRow=null;
 
 function lozenge(text,cfg){
@@ -600,6 +600,16 @@ function ownerChip(o){
   return `<span class="owner-chip"><span class="av ${cls}">${initials}</span>${o}</span>`;
 }
 
+function getNextId(){
+  return Math.max(...risks.map(r => r.id)) + 1;
+}
+
+function getNextKey(){
+  const nums = risks.map(r => parseInt(r.key.replace('RR-',''),10));
+  return Math.max(...nums) + 1;
+}
+
+  
 function getFiltered(){
   const q=document.getElementById('search-input').value.toLowerCase();
   const fs=document.getElementById('filter-status').value;
@@ -781,8 +791,14 @@ function saveRisk(){
     closeModal();selectRisk(editingId);
   } else {
     const now=new Date().toLocaleDateString('pl-PL',{day:'numeric',month:'short',year:'numeric'});
-    const nr={id:nextId,key:'RR-'+nextKey,...data,status:'otwarty',added:now,changed:'—'};
-    nextId++;nextKey++;
+    const nr={
+      id: getNextId(),
+      key: 'RR-' + getNextKey(),
+      ...data,
+      status:'otwarty',
+      added:now,
+      changed:'—'
+    };
     risks.unshift(nr);
     closeModal();render();
   }

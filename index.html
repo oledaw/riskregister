@@ -67,6 +67,21 @@ body{font-family:'Inter',sans-serif;background:var(--bg);color:var(--text);font-
 .topnav-right{margin-left:auto;display:flex;align-items:center;gap:6px}
 .avatar{width:28px;height:28px;border-radius:50%;background:#0052CC;color:#fff;font-size:11px;font-weight:600;display:flex;align-items:center;justify-content:center;cursor:pointer}
 
+/* TUTORIAL BUTTON */
+.btn-tutorial{
+  display:flex;align-items:center;gap:5px;
+  background:rgba(255,255,255,.15);
+  color:rgba(255,255,255,.9);
+  border:1px solid rgba(255,255,255,.25);
+  border-radius:3px;
+  padding:5px 10px;
+  font-family:'Inter',sans-serif;
+  font-size:12px;font-weight:500;
+  cursor:pointer;
+  transition:background .1s;
+}
+.btn-tutorial:hover{background:rgba(255,255,255,.25)}
+
 /* SIDEBAR */
 .layout{display:flex;height:calc(100vh - 48px)}
 .sidebar{
@@ -322,12 +337,11 @@ textarea{min-height:64px}
 }
 .btn-secondary:hover{background:var(--surface2);color:var(--text)}
 
-  .card-view{
+.card-view{
   display:none;
   flex-direction:column;
   gap:10px;
 }
-
 .risk-card{
   background:var(--surface);
   border:1px solid var(--border);
@@ -336,43 +350,90 @@ textarea{min-height:64px}
   cursor:pointer;
   transition:all .1s;
 }
+.risk-card:hover{background:#F8F9FA}
+.rc-top{display:flex;justify-content:space-between;align-items:flex-start;gap:8px}
+.rc-title{font-size:14px;font-weight:500}
+.rc-meta{display:flex;gap:6px;flex-wrap:wrap;margin-top:8px}
+.rc-footer{display:flex;justify-content:space-between;align-items:center;margin-top:10px}
 
-.risk-card:hover{
-  background:#F8F9FA;
+/* ===================== TUTORIAL ===================== */
+#tour-overlay{
+  display:none;
+  position:fixed;
+  inset:0;
+  z-index:500;
+  pointer-events:none;
+}
+#tour-overlay.active{display:block}
+
+#tour-cutout{
+  position:fixed;
+  border-radius:5px;
+  pointer-events:none;
+  transition:top .3s ease, left .3s ease, width .3s ease, height .3s ease;
+  box-shadow:0 0 0 9999px rgba(9,30,66,.72);
+  z-index:501;
+}
+#tour-ring{
+  position:fixed;
+  border-radius:7px;
+  pointer-events:none;
+  border:2px solid #4C9AFF;
+  transition:top .3s ease, left .3s ease, width .3s ease, height .3s ease;
+  z-index:502;
+  animation:tour-pulse 1.8s ease-in-out infinite;
+}
+@keyframes tour-pulse{
+  0%,100%{opacity:1;box-shadow:0 0 0 0 rgba(76,154,255,.4)}
+  50%{opacity:.8;box-shadow:0 0 0 6px rgba(76,154,255,0)}
 }
 
-.rc-top{
-  display:flex;
-  justify-content:space-between;
-  align-items:flex-start;
-  gap:8px;
+#tour-tooltip{
+  position:fixed;
+  width:280px;
+  background:#fff;
+  border:1px solid #DFE1E6;
+  border-radius:6px;
+  padding:18px 20px 14px;
+  pointer-events:all;
+  z-index:503;
+  transition:top .3s ease, left .3s ease;
+  box-shadow:0 4px 16px rgba(9,30,66,.18);
 }
-
-.rc-title{
-  font-size:14px;
-  font-weight:500;
+.tt-step-label{
+  font-size:11px;font-weight:600;
+  color:#4C9AFF;
+  letter-spacing:.06em;text-transform:uppercase;
+  margin-bottom:5px;
 }
-
-.rc-meta{
-  display:flex;
-  gap:6px;
-  flex-wrap:wrap;
-  margin-top:8px;
+.tt-heading{font-size:15px;font-weight:600;color:#172B4D;margin-bottom:8px;line-height:1.35}
+.tt-body{font-size:13px;color:#5E6C84;line-height:1.6;margin-bottom:14px}
+.tt-footer{display:flex;align-items:center;justify-content:space-between}
+.tt-dots{display:flex;gap:6px;align-items:center}
+.tt-dot{width:7px;height:7px;border-radius:50%;background:#DFE1E6;transition:background .2s,transform .2s}
+.tt-dot.on{background:#0052CC;transform:scale(1.2)}
+.tt-nav{display:flex;gap:8px;align-items:center}
+.tt-skip{
+  font-family:'Inter',sans-serif;font-size:12px;
+  background:none;border:none;cursor:pointer;
+  color:#97A0AF;padding:4px 6px;border-radius:3px;
 }
-
-.rc-footer{
-  display:flex;
-  justify-content:space-between;
-  align-items:center;
-  margin-top:10px;
+.tt-skip:hover{color:#5E6C84;background:#F4F5F7}
+.tt-next{
+  font-family:'Inter',sans-serif;font-size:12px;font-weight:500;
+  background:#0052CC;color:#fff;border:none;
+  border-radius:3px;padding:6px 14px;cursor:pointer;
+  transition:background .1s;
 }
+.tt-next:hover{background:#0065FF}
+.tt-next.finish{background:#006644}
+.tt-next.finish:hover{background:#00875A}
+/* ===================== END TUTORIAL ===================== */
 
-/* MOBILE SWITCH */
 @media(max-width:900px){
   .table-wrap{display:none}
   .card-view{display:flex}
 }
-
 @media(max-width:900px){
   .sidebar{display:none}
   .stats-row{grid-template-columns:1fr 1fr}
@@ -396,6 +457,10 @@ textarea{min-height:64px}
   <span class="topnav-item">Projekty</span>
   <span class="topnav-item">Twoje zadania</span>
   <div class="topnav-right">
+    <button class="btn-tutorial" onclick="startTour()">
+      <svg width="13" height="13" viewBox="0 0 13 13" fill="none"><circle cx="6.5" cy="6.5" r="5.5" stroke="currentColor" stroke-width="1.3"/><path d="M6.5 9V6.5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/><circle cx="6.5" cy="4.5" r=".75" fill="currentColor"/></svg>
+      Jak używać
+    </button>
     <div class="avatar">PM</div>
   </div>
 </nav>
@@ -484,7 +549,7 @@ textarea{min-height:64px}
     </select>
   </div>
 
-  <div class="table-wrap">
+  <div class="table-wrap" id="table-wrap">
     <table>
       <thead>
         <tr>
@@ -500,7 +565,7 @@ textarea{min-height:64px}
       <tbody id="tbody"></tbody>
     </table>
   </div>
-<div id="card-view" class="card-view"></div>
+  <div id="card-view" class="card-view"></div>
 </main>
 
 <!-- DETAIL PANEL -->
@@ -529,12 +594,12 @@ textarea{min-height:64px}
     </div>
     <div class="modal-body">
       <div class="form-group">
-        <label class="form-label">Tytuł ryzyka * <span>— co może stać się problemem w projekcie? </span></label>
-        <input type="text" id="f-title" placeholder="Webcon nie będzie miał potrzebnych danych do konsumpcji w procesie">
+        <label class="form-label">Tytuł ryzyka * <span>— co może stać się problemem w projekcie? </span></label>
+        <input type="text" id="f-title" placeholder="Webcon nie będzie miał potrzebnych danych do konsumpcji w procesie">
       </div>
       <div class="form-group">
         <label class="form-label">Opis <span>— jeżeli X, to Y </span></label>
-        <textarea id="f-desc" placeholder="Jeżeli API nie będzie gotowe na czas to Webcon może wstrzymać prace "></textarea>
+        <textarea id="f-desc" placeholder="Jeżeli API nie będzie gotowe na czas to Webcon może wstrzymać prace "></textarea>
       </div>
       <div class="form-group">
         <label class="form-label">Konsekwencja *<span>— no i co z tego? </span></label>
@@ -603,7 +668,28 @@ textarea{min-height:64px}
   </div>
 </div>
 
+<!-- TUTORIAL OVERLAY -->
+<div id="tour-overlay">
+  <div id="tour-cutout"></div>
+  <div id="tour-ring"></div>
+  <div id="tour-tooltip">
+    <div class="tt-step-label" id="tt-step"></div>
+    <div class="tt-heading" id="tt-heading"></div>
+    <div class="tt-body" id="tt-body"></div>
+    <div class="tt-footer">
+      <div class="tt-dots" id="tt-dots"></div>
+      <div class="tt-nav">
+        <button class="tt-skip" onclick="endTour()">Pomiń</button>
+        <button class="tt-next" id="tt-next-btn" onclick="nextTourStep()">Dalej →</button>
+      </div>
+    </div>
+  </div>
+</div>
+
 <script>
+/* ============================================================
+   DATA & LOOKUPS
+   ============================================================ */
 const PRIO={
   'opóźni projekt':     {bg:'var(--prio-low-bg)', text:'var(--prio-low-text)', dot:'var(--prio-low-dot)', sel:'sel-low'},
   'zagrozi deliverable':{bg:'var(--prio-mid-bg)', text:'var(--prio-mid-text)', dot:'var(--prio-mid-dot)', sel:'sel-mid'},
@@ -629,20 +715,20 @@ let risks=[
   {id:3,key:'RR-2',title:'Developer podbierany do innych projektów',desc:'Jeżeli developer zostanie przydzielony do innych zadań, zabraknie mocy przerobowych',cons:'Opóźnienie realizacji, ryzyko niedostarczenia zakresu w terminie',prio:'zagrozi deliverable',area:'zespół',author:'Stakeholder',mit:'Stakeholder formalnie zabezpiecza dedykację. PM monitoruje alokację co tydzień i eskaluje przy pierwszym sygnale.',owner:'Stakeholder',flag:'nie',status:'w trakcie',added:'30 kwi 2026',changed:'Stakeholder'},
   {id:4,key:'RR-3',title:'Formularz rejestru zbyt ciężki w uzupełnianiu',desc:'Jeżeli formularz będzie skomplikowany, nikt nie będzie go regularnie wypełniał',cons:'Rejestr staje się martwy — brak danych, brak mitygacji, projekt nieprzewidywalny',prio:'zatrzyma projekt',area:'proces',author:'PM',mit:'Uprościć do minimum. PM i stakeholder testują formularz przed wdrożeniem i wspólnie decydują o formie.',owner:'PM',flag:'tak',status:'otwarty',added:'30 kwi 2026',changed:'Stakeholder'},
   {id:5,key:'RR-4',title:'Opóźnienia w odpowiedziach między zespołami',desc:'Jeżeli któryś z zespołów będzie zwlekał z odpowiedzią, to pozostałe zespoły będą blokowane w pracy',cons:'Spadek płynności pracy, kumulacja blokad i realne zagrożenie dla timeline całego projektu',prio:'zagrozi deliverable',area:'proces',author:'PM',mit:'Ustalić SLA na odpowiedzi między zespołami (np. 24h). PM monitoruje blokery i eskaluje przy przekroczeniach.',owner:'PM',flag:'tak',status:'otwarty',added:'1 maj 2026',changed:'—'},
-  {id:6,key:'RR-5',title:'Brak wspólnego zrozumienia procesu',desc:'Jeżeli zespoły nie będą miały wspólnego spojrzenia na proces, mogą różnie interpretować wymagania',cons:'Niejednoznaczna implementacja, rozjazd między komponentami i konieczność reworku',prio:'zatrzyma projekt',area:'zakres',author:'PM',mit:'Zorganizować warsztat alignmentowy. Spisać i zatwierdzić flow procesu oraz edge case’y przed rozpoczęciem developmentu.',owner:'PM',flag:'tak',status:'otwarty',added:'1 maj 2026',changed:'—'},
+  {id:6,key:'RR-5',title:'Brak wspólnego zrozumienia procesu',desc:'Jeżeli zespoły nie będą miały wspólnego spojrzenia na proces, mogą różnie interpretować wymagania',cons:'Niejednoznaczna implementacja, rozjazd między komponentami i konieczność reworku',prio:'zatrzyma projekt',area:'zakres',author:'PM',mit:'Zorganizować warsztat alignmentowy. Spisać i zatwierdzić flow procesu oraz edge case\'y przed rozpoczęciem developmentu.',owner:'PM',flag:'tak',status:'otwarty',added:'1 maj 2026',changed:'—'},
   {id:7,key:'RR-6',title:'Brak danych do endpointów dla Webcon',desc:'Jeżeli Webcon nie otrzyma wymaganych danych do endpointów, nie będzie w stanie poprawnie zasilić UI',cons:'Brak działania kluczowych funkcji UI, blokada testów i opóźnienie wdrożenia',prio:'zatrzyma projekt',area:'zasoby',author:'Stakeholder',mit:'Zdefiniować kontrakty API upfront. Backend dostarcza mocki danych, a Webcon rozpoczyna integrację równolegle.',owner:'Stakeholder',flag:'tak',status:'w trakcie',added:'1 maj 2026',changed:'Stakeholder'},
   {id:8,key:'RR-7',title:'Niekompletne wymagania biznesowe',desc:'Jeżeli wymagania nie będą w pełni doprecyzowane, zespół może implementować błędne założenia',cons:'Rework, opóźnienia i potencjalne niedostarczenie wartości biznesowej',prio:'zagrozi deliverable',area:'zakres',author:'PM',mit:'Wprowadzić checkpointy akceptacji wymagań przez stakeholdera przed developmentem. Każdy feature musi mieć jasne acceptance criteria.',owner:'PM',flag:'nie',status:'otwarty',added:'1 maj 2026',changed:'—'},
   {id:9,key:'RR-8',title:'Brak dostępności kluczowego stakeholdera',desc:'Jeżeli stakeholder nie będzie dostępny do szybkich decyzji, zespół może utknąć na blokadach',cons:'Opóźnienia decyzyjne, zatrzymanie prac i ryzyko przekroczenia terminów',prio:'opóźni projekt',area:'zespół',author:'PM',mit:'Zarezerwować cykliczne sloty decyzyjne. Ustalić zastępstwo decyzyjne na czas niedostępności.',owner:'Stakeholder',flag:'tak',status:'otwarty',added:'1 maj 2026',changed:'—'},
-  {id:10,key:'RR-9',title:'Brak środowiska testowego na czas',desc:'Jeżeli środowisko testowe nie będzie gotowe na czas, nie będzie możliwości walidacji rozwiązania',cons:'Opóźnienie testów, kumulacja błędów i ryzyko przesunięcia release’u',prio:'zagrozi deliverable',area:'harmonogram',author:'PM',mit:'Zarezerwować przygotowanie środowiska jako osobny task z ownerem. Monitorować gotowość przed startem testów.',owner:'PM',flag:'nie',status:'w trakcie',added:'1 maj 2026',changed:'PM'},
+  {id:10,key:'RR-9',title:'Brak środowiska testowego na czas',desc:'Jeżeli środowisko testowe nie będzie gotowe na czas, nie będzie możliwości walidacji rozwiązania',cons:'Opóźnienie testów, kumulacja błędów i ryzyko przesunięcia release\'u',prio:'zagrozi deliverable',area:'harmonogram',author:'PM',mit:'Zarezerwować przygotowanie środowiska jako osobny task z ownerem. Monitorować gotowość przed startem testów.',owner:'PM',flag:'nie',status:'w trakcie',added:'1 maj 2026',changed:'PM'},
 ];
 
 let selectedPrio='', editingId=null, selectedRow=null;
-let sortState = {
-  field: null,
-  dir: 'asc' // asc | desc
-};
-let statsFilter = 'all';
+let sortState={field:null,dir:'asc'};
+let statsFilter='all';
 
+/* ============================================================
+   HELPERS
+   ============================================================ */
 function lozenge(text,cfg){
   return `<span class="lozenge" style="background:${cfg.bg};color:${cfg.text}">${text}</span>`;
 }
@@ -655,175 +741,88 @@ function ownerChip(o){
   const initials=o==='PM'?'PM':'ST';
   return `<span class="owner-chip"><span class="av ${cls}">${initials}</span>${o}</span>`;
 }
+function getNextId(){return Math.max(...risks.map(r=>r.id))+1}
+function getNextKey(){const nums=risks.map(r=>parseInt(r.key.replace('RR-',''),10));return Math.max(...nums)+1}
 
-function getNextId(){
-  return Math.max(...risks.map(r => r.id)) + 1;
-}
-
-function getNextKey(){
-  const nums = risks.map(r => parseInt(r.key.replace('RR-',''),10));
-  return Math.max(...nums) + 1;
-}
-
-  
+/* ============================================================
+   FILTER / SORT / RENDER
+   ============================================================ */
 function getFiltered(){
   const q=document.getElementById('search-input').value.toLowerCase();
   const fs=document.getElementById('filter-status').value;
   const fp=document.getElementById('filter-prio').value;
   const fa=document.getElementById('filter-area').value;
-
-  let data = risks.filter(r=>{
-    if(q && !r.title.toLowerCase().includes(q) && !r.key.toLowerCase().includes(q)) return false;
-    if(fs && r.status!==fs) return false;
-    if(fp && r.prio!==fp) return false;
-    if(fa && r.area!==fa) return false;
+  let data=risks.filter(r=>{
+    if(q&&!r.title.toLowerCase().includes(q)&&!r.key.toLowerCase().includes(q))return false;
+    if(fs&&r.status!==fs)return false;
+    if(fp&&r.prio!==fp)return false;
+    if(fa&&r.area!==fa)return false;
     return true;
   });
-
-  // 👇 STAT FILTER LOGIC
-  if(statsFilter === 'active'){
-    data = data.filter(r => r.status === 'otwarty' || r.status === 'w trakcie');
-  }
-
-  if(statsFilter === 'blocking'){
-    data = data.filter(r => r.prio === 'zatrzyma projekt' && r.status !== 'zamknięty' && r.status !== 'skipnięty');
-  }
-
-  if(statsFilter === 'catchup'){
-    data = data.filter(r => r.flag === 'tak' && (r.status === 'otwarty' || r.status === 'w trakcie'));
-  }
-
+  if(statsFilter==='active')data=data.filter(r=>r.status==='otwarty'||r.status==='w trakcie');
+  if(statsFilter==='blocking')data=data.filter(r=>r.prio==='zatrzyma projekt'&&r.status!=='zamknięty'&&r.status!=='skipnięty');
+  if(statsFilter==='catchup')data=data.filter(r=>r.flag==='tak'&&(r.status==='otwarty'||r.status==='w trakcie'));
   return data;
 }
 
 function getSorted(data){
-  if(!sortState.field) return data;
-
-  const dir = sortState.dir === 'asc' ? 1 : -1;
-
-  return [...data].sort((a,b)=>{
+  if(!sortState.field)return data;
+  const dir=sortState.dir==='asc'?1:-1;
+  return[...data].sort((a,b)=>{
     switch(sortState.field){
-
-      case 'key':
-        return (parseInt(a.key.split('-')[1]) - parseInt(b.key.split('-')[1])) * dir;
-
-      case 'title': // catchup first / last
-        const aFlag = a.flag === 'tak' ? 1 : 0;
-        const bFlag = b.flag === 'tak' ? 1 : 0;
-        return (bFlag - aFlag) * dir;
-
-      case 'prio':
-        const prioOrder = {
-          'zatrzyma projekt': 3,
-          'zagrozi deliverable': 2,
-          'opóźni projekt': 1
-        };
-        return (prioOrder[b.prio] - prioOrder[a.prio]) * dir;
-
-      case 'status':
-        const statusOrder = {
-          'otwarty': 1,
-          'w trakcie': 2,
-          'zamknięty': 3,
-          'zmaterializowany': 4,
-          'skipnięty': 5
-        };
-        return (statusOrder[a.status] - statusOrder[b.status]) * dir;
-
-      case 'area':
-        return a.area.localeCompare(b.area) * dir;
-
-      case 'owner':
-        return a.owner.localeCompare(b.owner) * dir;
-
-      case 'author':
-        return a.author.localeCompare(b.author) * dir;
-
-      default:
-        return 0;
+      case 'key':return(parseInt(a.key.split('-')[1])-parseInt(b.key.split('-')[1]))*dir;
+      case 'title':return((b.flag==='tak'?1:0)-(a.flag==='tak'?1:0))*dir;
+      case 'prio':const po={'zatrzyma projekt':3,'zagrozi deliverable':2,'opóźni projekt':1};return(po[b.prio]-po[a.prio])*dir;
+      case 'status':const so={'otwarty':1,'w trakcie':2,'zamknięty':3,'zmaterializowany':4,'skipnięty':5};return(so[a.status]-so[b.status])*dir;
+      case 'area':return a.area.localeCompare(b.area)*dir;
+      case 'owner':return a.owner.localeCompare(b.owner)*dir;
+      case 'author':return a.author.localeCompare(b.author)*dir;
+      default:return 0;
     }
   });
 }
 
 function setSort(field){
-  if(sortState.field === field){
-    sortState.dir = sortState.dir === 'asc' ? 'desc' : 'asc';
-  } else {
-    sortState.field = field;
-    sortState.dir = 'asc';
-  }
+  if(sortState.field===field){sortState.dir=sortState.dir==='asc'?'desc':'asc';}
+  else{sortState.field=field;sortState.dir='asc';}
   render();
 }
 
 function render(){
-  const filtered = getSorted(getFiltered());
-
-  renderTable(filtered);   // wydziel to co masz teraz do osobnej funkcji
-  renderCards(filtered); 
-  
+  const filtered=getSorted(getFiltered());
+  renderTable(filtered);
+  renderCards(filtered);
   renderStats();
 }
+
 function renderTable(data){
   const tbody=document.getElementById('tbody');
-
-  if(!data.length){
-    tbody.innerHTML=`<tr><td colspan="7" style="text-align:center;padding:40px;color:var(--text-faint)">Brak ryzyk pasujących do filtrów</td></tr>`;
-    return;
-  }
-
-  tbody.innerHTML = data.map(r=>{
-      const sel=selectedRow===r.id?' selected':'';
-      const flagHtml=r.flag==='tak'?`<span class="flag-badge">catch-up</span> `:'';
-      return `<tr class="${sel}" onclick="selectRisk(${r.id})">
-        <td class="td-key">${r.key}</td>
-        <td class="td-title"><div class="td-title-inner"><span>${flagHtml}${r.title}</span><span class="td-desc">${r.desc}</span></div></td>
-        <td>${prioLozenge(r.prio)}</td>
-        <td>${lozenge(r.status, STATUS[r.status]||{})}</td>
-        <td>${lozenge(r.area, AREA[r.area]||{})}</td>
-        <td>${ownerChip(r.owner)}</td>
-        <td><span style="font-size:12px;color:var(--text-muted)">${r.author}</span></td>
-      </tr>`;
-    }).join('');
+  if(!data.length){tbody.innerHTML=`<tr><td colspan="7" style="text-align:center;padding:40px;color:var(--text-faint)">Brak ryzyk pasujących do filtrów</td></tr>`;return;}
+  tbody.innerHTML=data.map(r=>{
+    const sel=selectedRow===r.id?' selected':'';
+    const flagHtml=r.flag==='tak'?`<span class="flag-badge">catch-up</span> `:'';
+    return `<tr class="${sel}" onclick="selectRisk(${r.id})">
+      <td class="td-key">${r.key}</td>
+      <td class="td-title"><div class="td-title-inner"><span>${flagHtml}${r.title}</span><span class="td-desc">${r.desc}</span></div></td>
+      <td>${prioLozenge(r.prio)}</td>
+      <td>${lozenge(r.status,STATUS[r.status]||{})}</td>
+      <td>${lozenge(r.area,AREA[r.area]||{})}</td>
+      <td>${ownerChip(r.owner)}</td>
+      <td><span style="font-size:12px;color:var(--text-muted)">${r.author}</span></td>
+    </tr>`;
+  }).join('');
 }
 
 function renderCards(data){
-  const wrap = document.getElementById('card-view');
-
-  if(!data.length){
-    wrap.innerHTML = `<div style="text-align:center;padding:40px;color:var(--text-faint)">
-      Brak ryzyk
+  const wrap=document.getElementById('card-view');
+  if(!data.length){wrap.innerHTML=`<div style="text-align:center;padding:40px;color:var(--text-faint)">Brak ryzyk</div>`;return;}
+  wrap.innerHTML=data.map(r=>{
+    const flag=r.flag==='tak'?`<span class="flag-badge">catch-up</span>`:'';
+    return `<div class="risk-card" onclick="selectRisk(${r.id})">
+      <div class="rc-top"><div><div class="td-key">${r.key}</div><div class="rc-title">${flag} ${r.title}</div></div>${lozenge(r.status,STATUS[r.status]||{})}</div>
+      <div class="rc-meta">${prioLozenge(r.prio)}${lozenge(r.area,AREA[r.area]||{})}</div>
+      <div class="rc-footer">${ownerChip(r.owner)}<span style="font-size:11px;color:var(--text-muted)">${r.author}</span></div>
     </div>`;
-    return;
-  }
-
-  wrap.innerHTML = data.map(r=>{
-    const flag = r.flag==='tak' ? `<span class="flag-badge">catch-up</span>` : '';
-
-    return `
-      <div class="risk-card" onclick="selectRisk(${r.id})">
-        
-        <div class="rc-top">
-          <div>
-            <div class="td-key">${r.key}</div>
-            <div class="rc-title">${flag} ${r.title}</div>
-          </div>
-          ${lozenge(r.status, STATUS[r.status]||{})}
-        </div>
-
-        <div class="rc-meta">
-          ${prioLozenge(r.prio)}
-          ${lozenge(r.area, AREA[r.area]||{})}
-        </div>
-
-        <div class="rc-footer">
-          ${ownerChip(r.owner)}
-          <span style="font-size:11px;color:var(--text-muted)">
-            ${r.author}
-          </span>
-        </div>
-
-      </div>
-    `;
   }).join('');
 }
 
@@ -831,45 +830,28 @@ function renderStats(){
   const active=risks.filter(r=>r.status==='otwarty'||r.status==='w trakcie').length;
   const blocking=risks.filter(r=>r.prio==='zatrzyma projekt'&&r.status!=='zamknięty'&&r.status!=='skipnięty').length;
   const catchup=risks.filter(r=>r.flag==='tak'&&(r.status==='otwarty'||r.status==='w trakcie')).length;
-  const done=risks.filter(r=>r.status==='zamknięty'||r.status==='skipnięty').length;
-
-  const card = (label, value, filterKey, color) => `
+  const card=(label,value,filterKey,color)=>`
     <div class="stat-card" onclick="setStatsFilter('${filterKey}')" style="cursor:pointer;${statsFilter===filterKey?'outline:2px solid var(--blue)':''}">
       <div class="stat-num" style="color:${color||'var(--text)'}">${value}</div>
       <div class="stat-label">${label}</div>
-    </div>
-  `;
-
+    </div>`;
   document.getElementById('stats-row').innerHTML=`
-    ${card('Blokujących projekt', blocking, 'blocking', 'var(--prio-high-text)')}
-    ${card('Wymaga catch-upu', catchup, 'catchup', 'var(--prio-mid-text)')}
-    ${card('Aktywnych', active, 'active', 'var(--blue)')}
-    ${card('Wszystkich ryzyk', risks.length, 'all')}
-  `;
+    ${card('Blokujących projekt',blocking,'blocking','var(--prio-high-text)')}
+    ${card('Wymaga catch-upu',catchup,'catchup','var(--prio-mid-text)')}
+    ${card('Aktywnych',active,'active','var(--blue)')}
+    ${card('Wszystkich ryzyk',risks.length,'all')}`;
 }
 
-function markCatchupDiscussed(id){
-  const r = risks.find(x => x.id === id);
-  if(!r) return;
+function setStatsFilter(filter){statsFilter=filter;selectedRow=null;render();}
 
-  r.flag = 'nie';
-  r.changed = 'teraz';
-
-  selectRisk(id); // odśwież panel
-}
-
-function setStatsFilter(filter){
-  statsFilter = filter;
-  selectedRow = null;
-  render();
-}
-
+/* ============================================================
+   DETAIL PANEL
+   ============================================================ */
 function selectRisk(id){
   selectedRow=id;
   const r=risks.find(x=>x.id===id);
-  if(!r) return;
+  if(!r)return;
   render();
-
   const nextStatuses={
     'otwarty':          [['w trakcie','→ W trakcie'],['zamknięty','Zamknij'],['zmaterializowany','Zmaterializował się'],['skipnięty','Skipnij']],
     'w trakcie':        [['zamknięty','Zamknij'],['zmaterializowany','Zmaterializował się']],
@@ -880,7 +862,6 @@ function selectRisk(id){
   const btns=(nextStatuses[r.status]||[]).map(([s,l])=>
     `<button class="btn-action${s==='zmaterializowany'?' danger':''}" onclick="changeStatus(${r.id},'${s}')">${l}</button>`
   ).join('');
-
   document.getElementById('dp-key').textContent=r.key;
   document.getElementById('dp-title').textContent=r.title;
   document.getElementById('dp-body').innerHTML=`
@@ -905,45 +886,32 @@ function selectRisk(id){
       <div class="dp-text-block">${r.mit}</div>
       <div style="font-size:12px;color:var(--text-faint);margin-top:6px">właściciel: ${r.owner}</div>
     </div>
-    <div class="dp-section">
+    <div class="dp-section" id="dp-actions-section">
       <div style="font-size:11px;font-weight:600;color:var(--text-muted);letter-spacing:.05em;text-transform:uppercase;margin-bottom:8px">Akcje</div>
       <div class="dp-actions">
         <button class="btn-action" onclick="editRisk(${r.id})">Edytuj</button>
-      
-        ${r.flag === 'tak' ? `
-          <button class="btn-action" onclick="markCatchupDiscussed(${r.id})">
-            Omówiono (odznacz catch-up)
-          </button>
-        ` : ''}
-      
+        ${r.flag==='tak'?`<button class="btn-action" onclick="markCatchupDiscussed(${r.id})">Omówiono (odznacz catch-up)</button>`:''}
         ${btns}
       </div>
     </div>
     <div style="padding:12px 0 4px;font-size:11px;color:var(--text-faint)">
       Dodano: ${r.added} przez ${r.author}${r.changed&&r.changed!=='—'?' · Zmienione przez: '+r.changed:''}
-    </div>
-  `;
+    </div>`;
   document.getElementById('detail-panel').classList.add('open');
 }
 
-function closeDetail(){
-  selectedRow=null;
-  document.getElementById('detail-panel').classList.remove('open');
-  render();
-}
+function closeDetail(){selectedRow=null;document.getElementById('detail-panel').classList.remove('open');render();}
+function changeStatus(id,status){const r=risks.find(x=>x.id===id);if(r){r.status=status;r.changed='teraz';}selectRisk(id);}
+function markCatchupDiscussed(id){const r=risks.find(x=>x.id===id);if(!r)return;r.flag='nie';r.changed='teraz';selectRisk(id);}
 
-function changeStatus(id,status){
-  const r=risks.find(x=>x.id===id);
-  if(r){r.status=status;r.changed='teraz';}
-  selectRisk(id);
-}
-
+/* ============================================================
+   MODAL
+   ============================================================ */
 function selectPrio(el){
   document.querySelectorAll('.prio-opt').forEach(o=>o.className='prio-opt');
   selectedPrio=el.dataset.prio;
   el.classList.add(PRIO[selectedPrio]?.sel||'');
 }
-
 function openModal(){
   editingId=null;
   document.getElementById('modal-title').textContent='Utwórz ryzyko';
@@ -951,15 +919,13 @@ function openModal(){
   document.getElementById('f-area').value='zakres';
   document.getElementById('f-author').value='PM';
   document.getElementById('f-owner').value='PM';
-  document.getElementById('f-flag').checked = false;
+  document.getElementById('f-flag').checked=false;
   document.querySelectorAll('.prio-opt').forEach(o=>o.className='prio-opt');
   selectedPrio='';
   document.getElementById('modal-backdrop').classList.add('open');
 }
-
 function editRisk(id){
-  const r=risks.find(x=>x.id===id);
-  if(!r)return;
+  const r=risks.find(x=>x.id===id);if(!r)return;
   editingId=id;
   document.getElementById('modal-title').textContent='Edytuj ryzyko';
   document.getElementById('f-title').value=r.title;
@@ -969,7 +935,7 @@ function editRisk(id){
   document.getElementById('f-area').value=r.area;
   document.getElementById('f-author').value=r.author;
   document.getElementById('f-owner').value=r.owner;
-  document.getElementById('f-flag').checked = r.flag === 'tak';
+  document.getElementById('f-flag').checked=r.flag==='tak';
   document.querySelectorAll('.prio-opt').forEach(o=>{
     o.className='prio-opt';
     if(o.dataset.prio===r.prio)o.classList.add(PRIO[r.prio]?.sel||'');
@@ -977,44 +943,185 @@ function editRisk(id){
   selectedPrio=r.prio;
   document.getElementById('modal-backdrop').classList.add('open');
 }
-
-function closeModal(){document.getElementById('modal-backdrop').classList.remove('open')}
-function closeModalOutside(e){if(e.target===document.getElementById('modal-backdrop'))closeModal()}
-
+function closeModal(){document.getElementById('modal-backdrop').classList.remove('open');}
+function closeModalOutside(e){if(e.target===document.getElementById('modal-backdrop'))closeModal();}
 function saveRisk(){
   const title=document.getElementById('f-title').value.trim();
   if(!title){alert('Wpisz tytuł ryzyka.');return;}
   if(!selectedPrio){alert('Wybierz priorytet.');return;}
   const data={
-    title,
-    desc:document.getElementById('f-desc').value.trim(),
+    title,desc:document.getElementById('f-desc').value.trim(),
     cons:document.getElementById('f-cons').value.trim(),
-    prio:selectedPrio,
-    area:document.getElementById('f-area').value,
+    prio:selectedPrio,area:document.getElementById('f-area').value,
     author:document.getElementById('f-author').value,
     mit:document.getElementById('f-mit').value.trim(),
     owner:document.getElementById('f-owner').value,
-    flag: document.getElementById('f-flag').checked ? 'tak' : 'nie',
+    flag:document.getElementById('f-flag').checked?'tak':'nie',
   };
   if(editingId){
     const idx=risks.findIndex(x=>x.id===editingId);
-    if(idx>=0){risks[idx]={...risks[idx],...data,changed:data.author};}
+    if(idx>=0)risks[idx]={...risks[idx],...data,changed:data.author};
     closeModal();selectRisk(editingId);
-  } else {
+  }else{
     const now=new Date().toLocaleDateString('pl-PL',{day:'numeric',month:'short',year:'numeric'});
-    const nr={
-      id: getNextId(),
-      key: 'RR-' + getNextKey(),
-      ...data,
-      status:'otwarty',
-      added:now,
-      changed:'—'
-    };
-    risks.unshift(nr);
+    risks.unshift({id:getNextId(),key:'RR-'+getNextKey(),...data,status:'otwarty',added:now,changed:'—'});
     closeModal();render();
   }
 }
 
+/* ============================================================
+   TUTORIAL
+   ============================================================ */
+const TOUR_STEPS = [
+  {
+    label: 'Krok 1 z 4',
+    heading: 'Dashboard przed spotkaniem',
+    body: 'Zanim wskoczysz na call z PM lub stakeholderem — rzuć tu okiem. Cztery liczby powiedzą Ci natychmiast: ile ryzyk blokuje projekt, ile wymaga omówienia i jaki jest ogólny stan.',
+    target: 'stats-row',
+    placement: 'below'
+  },
+  {
+    label: 'Krok 2 z 4',
+    heading: 'Lista ryzyk',
+    body: 'Tu trzymasz wszystkie ryzyka projektu. Filtry u góry pozwalają szybko zawęzić widok — np. tylko blokujące albo tylko Twoje. Kliknij dowolny wiersz, żeby zobaczyć szczegóły.',
+    target: 'table-wrap',
+    placement: 'above'
+  },
+  {
+    label: 'Krok 3 z 4',
+    heading: 'Karta szczegółów',
+    body: 'Po kliknięciu wiersza otwiera się ten panel. Masz tu opis ryzyka, konsekwencję, mitygację i właściciela — bez zbędnego scrollowania. Możesz go edytować w każdej chwili.',
+    target: 'detail-panel',
+    placement: 'left',
+    requiresOpen: true
+  },
+  {
+    label: 'Krok 4 z 4',
+    heading: 'Panel akcji',
+    body: 'Tu zmieniasz status ryzyka jednym kliknięciem: przenosisz do "W trakcie", zamykasz po mitygacji albo oznaczasz jako zmaterializowane. Możesz też odznaczać catch-up po omówieniu.',
+    target: 'dp-actions-section',
+    placement: 'left'
+  }
+];
+
+let tourStep = 0;
+
+function startTour() {
+  // Zamknij panel na start — otworzy się dopiero w kroku 3
+  closeDetail();
+
+  tourStep = 0;
+  document.getElementById('tour-overlay').classList.add('active');
+  showTourStep();
+}
+
+function showTourStep() {
+  const s = TOUR_STEPS[tourStep];
+
+  // Panel otwieramy dopiero od kroku 3 (index 2)
+  if (tourStep >= 2 && !document.getElementById('detail-panel').classList.contains('open')) {
+    selectRisk(risks[0].id);
+  }
+  // Na krokach 1 i 2 upewnij się że panel jest zamknięty
+  if (tourStep < 2 && document.getElementById('detail-panel').classList.contains('open')) {
+    closeDetail();
+  }
+
+  // Krok 3: panel właśnie się otworzył — czekamy na zakończenie animacji (transition 0.2s)
+  const delay = tourStep === 2 ? 280 : 80;
+  setTimeout(function run() {
+    const el = document.getElementById(s.target);
+    if (!el) return;
+
+    const rect = el.getBoundingClientRect();
+    const pad = 6;
+
+    const cutout = document.getElementById('tour-cutout');
+    const ring = document.getElementById('tour-ring');
+
+    const pos = {
+      top: rect.top - pad,
+      left: rect.left - pad,
+      width: rect.width + pad * 2,
+      height: rect.height + pad * 2
+    };
+
+    [cutout, ring].forEach(el => {
+      el.style.top = pos.top + 'px';
+      el.style.left = pos.left + 'px';
+      el.style.width = pos.width + 'px';
+      el.style.height = pos.height + 'px';
+    });
+
+    // Pozycja tooltipu
+    const tt = document.getElementById('tour-tooltip');
+    const ttW = 280;
+    const ttH = 200;
+    const margin = 14;
+    const vp = { w: window.innerWidth, h: window.innerHeight };
+
+    let top, left;
+
+    if (s.placement === 'below') {
+      top = rect.bottom + pad + margin;
+      left = rect.left + (rect.width / 2) - (ttW / 2);
+    } else if (s.placement === 'above') {
+      top = rect.top - pad - margin - ttH;
+      left = rect.left + (rect.width / 2) - (ttW / 2);
+    } else if (s.placement === 'left') {
+      top = rect.top + (rect.height / 2) - (ttH / 2);
+      left = rect.left - ttW - margin;
+      if (left < 8) left = rect.right + margin;
+    }
+
+    // Clamp do viewport
+    left = Math.max(8, Math.min(left, vp.w - ttW - 8));
+    top  = Math.max(8, Math.min(top, vp.h - ttH - 8));
+
+    tt.style.top = top + 'px';
+    tt.style.left = left + 'px';
+
+    // Treść
+    document.getElementById('tt-step').textContent = s.label;
+    document.getElementById('tt-heading').textContent = s.heading;
+    document.getElementById('tt-body').textContent = s.body;
+
+    // Kropki
+    document.getElementById('tt-dots').innerHTML = TOUR_STEPS.map((_, i) =>
+      `<span class="tt-dot ${i === tourStep ? 'on' : ''}"></span>`
+    ).join('');
+
+    // Przycisk
+    const btn = document.getElementById('tt-next-btn');
+    const isLast = tourStep === TOUR_STEPS.length - 1;
+    btn.textContent = isLast ? 'Rozumiem ✓' : 'Dalej →';
+    btn.className = 'tt-next' + (isLast ? ' finish' : '');
+  }, delay);
+}
+
+function nextTourStep() {
+  if (tourStep < TOUR_STEPS.length - 1) {
+    tourStep++;
+    showTourStep();
+  } else {
+    endTour();
+  }
+}
+
+function endTour() {
+  document.getElementById('tour-overlay').classList.remove('active');
+}
+
+// Zamknij samouczek klawiszem Escape
+document.addEventListener('keydown', e => {
+  if (e.key === 'Escape' && document.getElementById('tour-overlay').classList.contains('active')) {
+    endTour();
+  }
+});
+
+/* ============================================================
+   INIT
+   ============================================================ */
 render();
 </script>
 </body>

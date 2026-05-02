@@ -1,145 +1,142 @@
-# riskregister
+# "Lepiej zapobiegać niż leczyć" - rejestr ryzyk projektowych
 
-
-## Workflow pracy dla formuły "Lepiej zapobiegać niż leczyć" pomiędzy Project Owner ↔ PM
-
-## 1. Dodawanie potencjalnych problemów (źródło prawdy)
-**PM i stakeholder dodają ryzyka** w momencie ich zauważenia — bez czekania na spotkanie. 
-Prawdopodobnie będą **związane z obszarami: zakres projektu, harmonogram, zasoby, zespół.**
-
-Każde ryzyko musi zawierać:
-- opis (**co się stanie?**)
-- konsekwencję (**co z tego wyniknie?**)
-- wpływ (**czas, zakres czy blokada**)
-- mitygację (**co robimy teraz?**)
-
-**Brak** któregokolwiek elementu **= ryzyko niekompletne**.
+Narzędzie do wspólnego zarządzania ryzykami przez PM i Project Ownera (Stakeholdera). Rejestr działa jako żywy dokument aktualizowany na bieżąco — nie raport tworzony raz na sprint.
 
 ---
 
-## 2. Ownership
-Każde ryzyko ma:
-- autora
-- **ownera** (PM lub stakeholder)
-- konkretny **next step** (**kto, co, kiedy**)
+## Workflow: PM × Project Owner
 
-**Unikamy ogólników typu „zespół zrobi”.**
+Rejestr jest współdzielony — każda ze stron może dodawać ryzyka i aktualizować ich status. Podział odpowiedzialności jest następujący:
 
----
+| Czynność | PM | Project Owner |
+|---|---|---|
+| Dodaje ryzyka operacyjne (zespół, proces, harmonogram) i biznesowe | ✅ | ✅ |
+| Ocenia efekt i przypisuje mitygację | ✅ | ✅ |
+| Monitoruje status ryzyk co tydzień | ✅ | |
+| Uczestniczy w catch-upach dla ryzyk oznaczonych flagą | ✅ | ✅ |
+| Zamyka ryzyko po wykonaniu mitygacji (w zależności kto jest ownerem) | ✅ | ✅ |
+| Pilnuje braków | ✅ | |
+| Decyduje | | ✅ |
 
-## 3. Codzienna praca (async)
-PM:
-- **przegląda** nowe ryzyka
-- **pilnuje braków** (mitygacja, owner)
-- **monitoruje** statusy
+### Rytm pracy
 
-Stakeholder:
-- **reaguje** na przypisane mitygacje
-- **decyduje**
-- **odpowiada na ryzyka oznaczone jako „catch-up”**
+```
+Poniedziałek (PM)
+└── Przegląd rejestru przed tygodniem
+    ├── Aktualizacja statusów
+    ├── Sprawdzenie czy pojawiły się nowe blokery
+    └── Przygotowanie agendy catch-upu
 
----
+Środa lub czwartek (PM + Project Owner)
+└── Catch-up — tylko ryzyka z flagą „wymaga catch-upu"
+    ├── Omówienie mitygacji w toku
+    ├── Decyzje dotyczące zasobów i eskalacji
+    └── Odznaczenie flagi po omówieniu
 
-## 4. Cotygodniowy Risk Review (15-30 min)
-Spotkanie PM + stakeholder.
-
-**Agenda:**
-1. Ryzyka **blokujące** projekt („zatrzyma projekt”)
-2. Ryzyka **z flagą „catch-up”**
-3. Nowe ryzyka (walidacja jakości)
-4. Aktualizacja statusów
-
-Cel: **decyzje, nie raportowanie.**
-
----
-
-## 5. Statusy i przepływ
-- **otwarty** → zidentyfikowane
-- **w trakcie** → trwa mitygacja
-- **zamknięty** → rozwiązane
-- **zmaterializowany** → problem się wydarzył
-- **skipnięty** → świadomie ignorowane
+Koniec sprintu (PM)
+└── Retrospekcja rejestru
+    ├── Zamknięcie obsłużonych ryzyk
+    ├── Weryfikacja ryzyk „w trakcie" — czy mitygacja postępuje?
+    └── Identyfikacja nowych ryzyk na kolejny sprint
+```
 
 ---
 
-## 6. Priorytety ryzyk – jak je rozumieć
+## Tworzenie ryzyka — definicje pól
 
-### 🔴 HIGH — „Zatrzyma projekt”
+Formularz podzielony jest na trzy sekcje, które prowadzą przez proces od diagnozy do planu działania.
 
-**Jak to rozumieć:**  
-Bez rozwiązania tego ryzyka projekt nie może iść dalej.
+### Sekcja 1 — Zdefiniuj
 
-**Sygnały:**
-- blocker / brak możliwości pracy  
-- brak danych / decyzji / środowiska  
-- zależność zewnętrzna blokuje wszystko  
+**Opis** — punkt wejścia. Możesz wpisać luźną notatkę („developer jest przeciążony") lub pełny scenariusz w formacie:
+> *Jeżeli [warunek], to [skutek dla projektu].*
 
-**Przykład:**  
-API nie istnieje → frontend stoi → nic nie da się testować  
+Przycisk **Uzupełnij AI** przekształci notatkę w kompletny wpis — wypełni wszystkie pola poniżej. Możesz potem ręcznie poprawić każde z nich.
 
-**Test decyzyjny:**  
-👉 „Czy zespół może pracować dalej mimo tego?”  
-→ jeśli **nie** → to jest **HIGH**
+**Tytuł** — zwięzłe zdanie identyfikujące ryzyko. Powinno zaczynać się od rzeczownika lub podmiotu i być zrozumiałe bez czytania opisu.
+> ✅ *Nieautoryzowane angażowanie developera w zadania spoza projektu*
+> ❌ *Problem z developerem*
 
-### 🟠 MEDIUM — „Psuje rezultat”
+**Konsekwencja** — co konkretnie stanie się z projektem, jeśli ryzyko się zmaterializuje. Najlepiej z oszacowaniem: ile czasu, co przepada, co wymaga renegocjacji.
 
-**Jak to rozumieć:**  
-Projekt pójdzie dalej, ale dowiezie coś gorszego niż planowaliśmy.
-
-**Sygnały:**
-- kompromisy jakościowe  
-- niepełne feature’y  
-- rework / zmiany scope’u  
-
-**Przykład:**  
-Feature działa, ale nie spełnia wymagań biznesowych → trzeba poprawiać  
-
-**Test decyzyjny:**  
-👉 „Czy dowieziemy coś innego niż obiecaliśmy?”  
-→ jeśli **tak** → to **MEDIUM**
-
-### 🟢 LOW — „Przesuwa termin”
-
-**Jak to rozumieć:**  
-Dowieziemy to, co trzeba — tylko później.
-
-**Sygnały:**
-- chwilowy brak zasobów  
-- opóźnienia w komunikacji  
-- drobne blokady operacyjne  
-
-**Przykład:**  
-Developer dostępny za tydzień → timeline się przesuwa  
-
-**Test decyzyjny:**  
-👉 „Czy jedyny problem to czas?”  
-→ jeśli **tak** → to **LOW**
+**Dodaje** — kto zgłasza ryzyko: PM lub Stakeholder. Wpływa na kontekst i odpowiedzialność za śledzenie.
 
 ---
 
-## 6. Zmaterializowane ryzyko
-Gdy ryzyko się wydarzy:
-- PM oznacza ryzyko jak zmaterializowane
+### Sekcja 2 — Oceń
 
-**Ryzyko przestaje być hipotezą — staje się realnym problemem.**
+**Efekt** — jeden z trzech poziomów, wybierany jako kafelek:
 
----
-
-## 7. Wykorzystanie metryk
-Dashboard służy do sterowania rozmową:
-- aktywne ryzyka → **trend**
-- blokujące → **priorytet**
-- catch-up → **pomoc/decyzje**
+| Efekt | Znaczenie |
+|---|---|
+| **Przesuwa termin** | Projekt dotrze do celu, ale później niż zakładano |
+| **Psuje rezultat** | Dostarczymy coś innego lub gorszego niż zakładano |
+| **Zatrzyma projekt** | Twarda blokada — prace stają do czasu rozwiązania |
 
 ---
 
-## 8. Zasady współpracy
-- brak mitygacji = ryzyko nieważne
-- każde ryzyko ma ownera
-- flaga „catch-up” = reakcja w 48h
-- review odbywa się co tydzień
+### Sekcja 3 — Działaj
+
+**Mitygacja** — konkretny next step w formacie: *kto, co, kiedy*. Nie „monitorować sytuację", tylko działanie z właścicielem i terminem.
+> ✅ *PM eskaluje do PMO do piątku. Stakeholder potwierdza alokację developera do końca tygodnia.*
+
+**Gdzie wprowadzamy zmianę** — jeden lub kilka obszarów, w których mitygacja wymaga interwencji:
+
+| Obszar | Kiedy zaznaczać |
+|---|---|
+| **W wymaganiach** | Trzeba doprecyzować AC, zakres lub założenia |
+| **W planie** | Zmieniamy harmonogram, taski lub alokację |
+| **W zespole** | Zmieniamy dostępność, odpowiedzialność lub skład |
+| **W komunikacji** | Ustalamy SLA, proces decyzyjny lub synchronizację |
+| **W rozwiązaniu technicznym** | Zmieniamy API, dane lub implementację |
+
+**Właściciel mitygacji** — osoba odpowiedzialna za wykonanie akcji. Nie musi być tożsama z osobą, która ryzyko zgłosiła.
+
+**Wymaga catch-upu** — flaga dla ryzyk, które wymagają omówienia na najbliższym spotkaniu. Odznacza się po omówieniu przyciskiem „Omówiono" w panelu szczegółów.
 
 ---
 
-## 9. Kluczowa zasada
-Nie rejestrujemy wszystkiego — tylko ryzyka, które mogą wpłynąć na decyzje, zakres, czas lub wynik projektu.
+## Zarządzanie i utrzymanie rejestru
+
+### Statusy ryzyka
+
+```
+otwarty  ──►  w trakcie  ──►  zamknięty
+                │
+                └──►  zmaterializowany  ──►  zamknięty (archiwum)
+                │
+                └──►  skipnięty
+```
+
+| Status | Znaczenie |
+|---|---|
+| **Otwarty** | Ryzyko zidentyfikowane, mitygacja jeszcze nie rozpoczęta |
+| **W trakcie** | Mitygacja w toku — ktoś aktywnie pracuje nad obsługą |
+| **Zamknięty** | Ryzyko obsłużone lub nieaktualne |
+| **Zmaterializowany** | Ryzyko wystąpiło — stało się problemem, wymaga zarządzania jako incydent |
+| **Skipnięty** | Świadoma decyzja o niedziałaniu — ryzyko zaakceptowane |
+
+### Zasady higieny rejestru
+
+**Nie zostawiaj ryzyk w statusie „otwarty" bez właściciela mitygacji.** Ryzyko bez akcji to tylko lista strachu.
+
+**Regularnie przeglądaj ryzyka „w trakcie".** Jeśli mitygacja trwa dłużej niż sprint bez postępu — to sygnał do eskalacji lub zmiany podejścia.
+
+**Zamykaj i archiwizuj.** Rejestr traci wartość, gdy gromadzi dziesiątki nieaktualnych wpisów. Zamknięte ryzyka zostawiają ślad historyczny, ale nie zaśmiecają widoku dzięki filtrom.
+
+**Zmaterializowane ryzyko ≠ porażka.** Wpis w statusie „zmaterializowany" to cenna informacja — pokazuje, co się sprawdziło jako prognoza i gdzie mitygacja zawiodła. Archiwizuj z notatką.
+
+**Catch-up tylko z flagą.** Nie omawiaj całego rejestru na każdym spotkaniu. Flaga „wymaga catch-upu" wskazuje dokładnie te ryzyka, które wymagają decyzji lub aktualizacji.
+
+### Filtry — kiedy ich używać
+
+| Filtr | Użycie |
+|---|---|
+| **Efekt → Zatrzyma projekt** | Przed każdym spotkaniem statusowym — co może nas zablokować? |
+| **Status → W trakcie** | Tygodniowy przegląd postępu mitygacji |
+| **Zmiana w → Zespół / Plan** | Planowanie sprintu — co wymaga zmian w alokacji? |
+| **Stat: Wymaga catch-upu** | Przygotowanie agendy spotkania PM × Stakeholder |
+
+---
+
+*Rejestr jest tak dobry, jak regularność jego aktualizacji. 10 minut tygodniowo wystarczy — pod warunkiem że się to robi.*

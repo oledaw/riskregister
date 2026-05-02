@@ -1,0 +1,38 @@
+/* ============================================================
+   TOKENS — design variables
+   ============================================================ */
+*,*::before,*::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+:root {
+  --bg:           #F4F5F7;
+  --surface:      #FFFFFF;
+  --surface2:     #F4F5F7;
+  --border:       #DFE1E6;
+  --border-strong:#C1C7D0;
+  --text:         #172B4D;
+  --text-muted:   #5E6C84;
+  --text-faint:   #97A0AF;
+  --blue:         #0052CC;
+  --blue-bg:      #DEEBFF;
+  --blue-text:    #0052CC;
+  --nav:          #0747A6;
+  --nav-surface:  #253858;
+
+  --prio-low-bg:   #E3FCEF; --prio-low-text:  #006644; --prio-low-dot:  #00875A;
+  --prio-mid-bg:   #FFFAE6; --prio-mid-text:  #974F0C; --prio-mid-dot:  #FF991F;
+  --prio-high-bg:  #FFEBE6; --prio-high-text: #BF2600; --prio-high-dot: #DE350B;
+
+  --status-open-bg:     #DEEBFF; --status-open-text:     #0052CC;
+  --status-progress-bg: #E6FCFF; --status-progress-text: #006EA7;
+  --status-done-bg:     #E3FCEF; --status-done-text:     #006644;
+  --status-skip-bg:     #F4F5F7; --status-skip-text:     #5E6C84;
+  --status-mat-bg:      #FFEBE6; --status-mat-text:      #BF2600;
+}
+
+body {
+  font-family: 'Inter', sans-serif;
+  background: var(--bg);
+  color: var(--text);
+  font-size: 14px;
+  line-height: 1.5;
+}

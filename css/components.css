@@ -1,0 +1,95 @@
+/* ============================================================
+   COMPONENTS — lozenges, badges, chips, detail panel, buttons
+   ============================================================ */
+
+/* LOZENGE */
+.lozenge {
+  display: inline-flex; align-items: center; gap: 4px;
+  font-size: 11px; font-weight: 600;
+  padding: 2px 8px; border-radius: 3px;
+  text-transform: uppercase; letter-spacing: .04em;
+  white-space: nowrap;
+}
+.dot { width: 7px; height: 7px; border-radius: 50%; flex-shrink: 0; }
+
+/* FLAG BADGE */
+.flag-badge {
+  display: inline-flex; align-items: center; gap: 3px;
+  font-size: 11px; font-weight: 500;
+  padding: 2px 6px; border-radius: 3px;
+  background: var(--prio-high-bg); color: var(--prio-high-text);
+}
+
+/* CHANGE BADGE */
+.change-badge {
+  display: inline-flex; align-items: center;
+  font-size: 11px; font-weight: 500;
+  padding: 2px 7px; border-radius: 3px;
+  background: #EAE6FF; color: #403294;
+  white-space: nowrap;
+}
+
+/* OWNER CHIP */
+.owner-chip { display: inline-flex; align-items: center; gap: 5px; font-size: 12px; color: var(--text-muted); }
+.owner-chip .av {
+  width: 22px; height: 22px; border-radius: 50%;
+  font-size: 9px; font-weight: 600;
+  display: flex; align-items: center; justify-content: center;
+  flex-shrink: 0;
+}
+.av-pm { background: #DEEBFF; color: #0052CC; }
+.av-st { background: #E3FCEF; color: #006644; }
+
+/* DETAIL PANEL */
+.detail-panel {
+  width: 0; overflow: hidden;
+  border-left: 1px solid var(--border);
+  background: var(--surface);
+  transition: width .2s ease;
+  flex-shrink: 0;
+  display: flex; flex-direction: column;
+}
+.detail-panel.open { width: 380px; }
+
+.dp-header {
+  padding: 16px 20px 12px;
+  border-bottom: 1px solid var(--border);
+  display: flex; align-items: flex-start; justify-content: space-between; gap: 8px;
+}
+.dp-key { font-size: 12px; color: var(--blue); font-weight: 600; margin-bottom: 4px; }
+.dp-title { font-size: 15px; font-weight: 600; color: var(--text); line-height: 1.4; }
+.btn-close-dp {
+  background: none; border: none; cursor: pointer;
+  color: var(--text-muted); padding: 4px; border-radius: 3px;
+  flex-shrink: 0; transition: background .1s;
+}
+.btn-close-dp:hover { background: var(--surface2); }
+
+.dp-body { padding: 0 20px 20px; overflow-y: auto; flex: 1; }
+.dp-section { padding: 16px 0; border-bottom: 1px solid var(--border); }
+.dp-section:last-child { border-bottom: none; }
+.dp-section-title {
+  font-size: 11px; font-weight: 600;
+  color: var(--text-muted); letter-spacing: .05em; text-transform: uppercase;
+  margin-bottom: 8px;
+}
+.dp-row { display: flex; align-items: flex-start; gap: 12px; margin-bottom: 10px; }
+.dp-row:last-child { margin-bottom: 0; }
+.dp-label { font-size: 12px; color: var(--text-muted); width: 110px; flex-shrink: 0; padding-top: 2px; }
+.dp-value { font-size: 13px; color: var(--text); flex: 1; line-height: 1.5; }
+.dp-text-block {
+  background: var(--surface2); border-radius: 3px;
+  padding: 10px 12px; font-size: 13px; color: var(--text-muted);
+  line-height: 1.55; margin-top: 4px; border-left: 3px solid var(--border-strong);
+}
+.dp-change-list { display: flex; flex-wrap: wrap; gap: 5px; margin-top: 4px; }
+
+.dp-actions { display: flex; flex-wrap: wrap; gap: 6px; margin-top: 12px; }
+.btn-action {
+  font-family: 'Inter', sans-serif; font-size: 12px; font-weight: 500;
+  padding: 5px 10px; border-radius: 3px;
+  border: 1px solid var(--border); background: var(--surface);
+  color: var(--text-muted); cursor: pointer; transition: all .1s;
+}
+.btn-action:hover { background: var(--surface2); color: var(--text); border-color: var(--border-strong); }
+.btn-action.danger:hover { background: var(--prio-high-bg); color: var(--prio-high-text); border-color: var(--prio-high-dot); }

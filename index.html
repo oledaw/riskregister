@@ -602,96 +602,112 @@ textarea{min-height:64px}
     </div>
     <div class="modal-body">
 
-      <div class="form-group">
-        <label class="form-label">Tytuł * <span>— co może stać się problemem?</span></label>
-        <input type="text" id="f-title" placeholder="Webcon nie będzie miał potrzebnych danych do konsumpcji w procesie">
-      </div>
+  <!-- ===================== ZDEFINIUJ ===================== -->
+  <div class="form-group" style="margin-bottom:8px">
+    <div class="dp-section-title">Zdefiniuj</div>
+  </div>
 
-      <div class="form-group">
-        <label class="form-label">Opis <span>— jeżeli X, to Y</span></label>
-        <textarea id="f-desc" placeholder="Jeżeli API nie będzie gotowe na czas to Webcon może wstrzymać prace"></textarea>
-      </div>
+  <div class="form-group">
+    <label class="form-label">Tytuł * <span>— co może stać się problemem?</span></label>
+    <input type="text" id="f-title" placeholder="Webcon nie będzie miał potrzebnych danych do konsumpcji w procesie">
+  </div>
 
-      <div class="form-group">
-        <label class="form-label">Konsekwencja * <span>— co z tego wyniknie?</span></label>
-        <textarea id="f-cons" placeholder="Wznowienie pracy może być obarczone narzutem co wpłynie negatywnie na ogólny harmonogram"></textarea>
-      </div>
+  <div class="form-group">
+    <label class="form-label">Opis <span>— jeżeli X, to Y</span></label>
+    <textarea id="f-desc" placeholder="Jeżeli API nie będzie gotowe na czas to Webcon może wstrzymać prace"></textarea>
+  </div>
 
-      <div class="form-group">
-        <label class="form-label">Efekt *</label>
-        <div class="prio-picker">
-          <div class="prio-opt" data-prio="przesuwa termin" onclick="selectPrio(this)">
-            <div class="prio-opt-name">Przesuwa termin</div>
-            <div class="prio-opt-desc">Termin się przesunie, ale rezultat zostanie utrzymany</div>
-          </div>
-          <div class="prio-opt" data-prio="psuje rezultat" onclick="selectPrio(this)">
-            <div class="prio-opt-name">Psuje rezultat</div>
-            <div class="prio-opt-desc">Dowieziemy coś innego lub gorszego niż zakładaliśmy</div>
-          </div>
-          <div class="prio-opt" data-prio="zatrzyma projekt" onclick="selectPrio(this)">
-            <div class="prio-opt-name">Zatrzyma projekt</div>
-            <div class="prio-opt-desc">Blokada — projekt staje</div>
-          </div>
-        </div>
-      </div>
+  <div class="form-group">
+    <label class="form-label">Konsekwencja * <span>— co z tego wyniknie?</span></label>
+    <textarea id="f-cons" placeholder="Wznowienie pracy może być obarczone narzutem co wpłynie negatywnie na ogólny harmonogram"></textarea>
+  </div>
 
-      <div class="form-row">
+  <!-- ===================== OCEŃ ===================== -->
+  <div class="form-group" style="margin-top:14px;margin-bottom:8px">
+    <div class="dp-section-title">Oceń</div>
+  </div>
+
+  <div class="form-group">
+    <label class="form-label">Efekt *</label>
+    <div class="prio-picker">
+      <div class="prio-opt" data-prio="przesuwa termin" onclick="selectPrio(this)">
+        <div class="prio-opt-name">Przesuwa termin</div>
+        <div class="prio-opt-desc">Termin się przesunie, ale rezultat zostanie utrzymany</div>
+      </div>
+      <div class="prio-opt" data-prio="psuje rezultat" onclick="selectPrio(this)">
+        <div class="prio-opt-name">Psuje rezultat</div>
+        <div class="prio-opt-desc">Dowieziemy coś innego lub gorszego niż zakładaliśmy</div>
+      </div>
+      <div class="prio-opt" data-prio="zatrzyma projekt" onclick="selectPrio(this)">
+        <div class="prio-opt-name">Zatrzyma projekt</div>
+        <div class="prio-opt-desc">Blokada — projekt staje</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="form-row">
           <div class="form-group">
-          <label class="form-label" style="display:flex;align-items:center;gap:8px;cursor:pointer">
-            <input type="checkbox" id="f-flag" style="width:16px;height:16px;cursor:pointer">
-            Wymaga catch-upu
-          </label>
-        </div>
-      </div>
+      <label class="form-label" style="display:flex;align-items:center;gap:8px;cursor:pointer">
+        <input type="checkbox" id="f-flag" style="width:16px;height:16px;cursor:pointer">
+        Wymaga catch-upu
+      </label>
+    </div>
 
-      <div class="form-group">
-        <label class="form-label">Mitygacja</label>
-        <textarea id="f-mit" placeholder="Konkretny next step — kto, co, kiedy"></textarea>
-      </div>
+  </div>
 
-      <div class="form-group">
-        <label class="form-label">Gdzie wprowadzamy zmianę <span>— możesz zaznaczyć kilka</span></label>
-        <div class="change-picker">
-          <div class="change-opt" data-change="wymagania" onclick="toggleChange(this)">
-            <div class="change-opt-name">W wymaganiach</div>
-            <div class="change-opt-desc">Doprecyzowanie, AC, zakres</div>
-          </div>
-          <div class="change-opt" data-change="plan" onclick="toggleChange(this)">
-            <div class="change-opt-name">W planie</div>
-            <div class="change-opt-desc">Harmonogram, taski, alokacja</div>
-          </div>
-          <div class="change-opt" data-change="zespół" onclick="toggleChange(this)">
-            <div class="change-opt-name">W zespole</div>
-            <div class="change-opt-desc">Dostępność, odpowiedzialność</div>
-          </div>
-          <div class="change-opt" data-change="komunikacja" onclick="toggleChange(this)">
-            <div class="change-opt-name">W komunikacji</div>
-            <div class="change-opt-desc">SLA, decyzje, synchronizacja</div>
-          </div>
-          <div class="change-opt" data-change="tech" onclick="toggleChange(this)">
-            <div class="change-opt-name">W rozwiązaniu technicznym</div>
-            <div class="change-opt-desc">API, dane, implementacja</div>
-          </div>
-        </div>
-      </div>
+  <!-- ===================== DZIAŁAJ ===================== -->
+  <div class="form-group" style="margin-top:14px;margin-bottom:8px">
+    <div class="dp-section-title">Działaj</div>
+  </div>
 
-      <div class="form-row">
-        <div class="form-group">
-          <label class="form-label">Właściciel mitygacji</label>
-          <select id="f-owner">
-            <option value="PM">PM</option>
-            <option value="Stakeholder">Stakeholder</option>
-          </select>
-        </div>
-        <div class="form-group">
-          <label class="form-label">Dodaje</label>
-          <select id="f-author">
-            <option value="PM">PM</option>
-            <option value="Stakeholder">Stakeholder</option>
-          </select>
-        </div>
-        
+  <div class="form-group">
+    <label class="form-label">Mitygacja</label>
+    <textarea id="f-mit" placeholder="Konkretny next step — kto, co, kiedy"></textarea>
+  </div>
+
+  <div class="form-group">
+    <label class="form-label">Gdzie podejmujemy działania? <span>— możesz zaznaczyć kilka</span></label>
+    <div class="change-picker">
+      <div class="change-opt" data-change="wymagania" onclick="toggleChange(this)">
+        <div class="change-opt-name">W wymaganiach</div>
+        <div class="change-opt-desc">Doprecyzowanie, AC, zakres</div>
       </div>
+      <div class="change-opt" data-change="plan" onclick="toggleChange(this)">
+        <div class="change-opt-name">W planie</div>
+        <div class="change-opt-desc">Harmonogram, taski, alokacja</div>
+      </div>
+      <div class="change-opt" data-change="zespół" onclick="toggleChange(this)">
+        <div class="change-opt-name">W zespole</div>
+        <div class="change-opt-desc">Dostępność, odpowiedzialność</div>
+      </div>
+      <div class="change-opt" data-change="komunikacja" onclick="toggleChange(this)">
+        <div class="change-opt-name">W komunikacji</div>
+        <div class="change-opt-desc">SLA, decyzje, synchronizacja</div>
+      </div>
+      <div class="change-opt" data-change="tech" onclick="toggleChange(this)">
+        <div class="change-opt-name">W rozwiązaniu technicznym</div>
+        <div class="change-opt-desc">API, dane, implementacja</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="form-row">
+    <div class="form-group">
+      <label class="form-label">Właściciel mitygacji</label>
+      <select id="f-owner">
+        <option value="PM">PM</option>
+        <option value="Stakeholder">Stakeholder</option>
+      </select>
+    </div>
+    
+    <div class="form-group">
+      <label class="form-label">Dodaje</label>
+      <select id="f-author">
+        <option value="PM">PM</option>
+        <option value="Stakeholder">Stakeholder</option>
+      </select>
+    </div>
+  </div>
 
     </div>
     <div class="modal-footer">
@@ -753,7 +769,7 @@ let risks = [
    cons:'Restart analizy, koncepcja PM-a zostanie uznana za nieprzemyślaną — strata 2–3 tygodni',
    prio:'zatrzyma projekt', author:'PM',
    mit:'Zaplanować sesję z SA przed startem sprintu. PM rezerwuje slot, stakeholder potwierdza priorytety.',
-   change:['wymagania','plan'],
+   change:['komunikacja'],
    owner:'PM', flag:'tak', status:'otwarty', added:'30 kwi 2026', changed:'—'},
 
   {id:3, key:'RR-2', title:'Developer podbierany do innych projektów',
@@ -769,7 +785,7 @@ let risks = [
    cons:'Rejestr staje się martwy — brak danych, brak mitygacji, projekt nieprzewidywalny',
    prio:'zatrzyma projekt', author:'PM',
    mit:'Uprościć do minimum. PM i stakeholder testują formularz przed wdrożeniem i wspólnie decydują o formie.',
-   change:['komunikacja'],
+   change:['komunikacja', 'wymagania'],
    owner:'PM', flag:'tak', status:'otwarty', added:'30 kwi 2026', changed:'Stakeholder'},
 
   {id:5, key:'RR-4', title:'Opóźnienia w odpowiedziach między zespołami',
@@ -793,7 +809,7 @@ let risks = [
    cons:'Brak działania kluczowych funkcji UI, blokada testów i opóźnienie wdrożenia',
    prio:'zatrzyma projekt', author:'Stakeholder',
    mit:'Zdefiniować kontrakty API upfront. Backend dostarcza mocki danych, a Webcon rozpoczyna integrację równolegle.',
-   change:['tech','wymagania'],
+   change:['tech','wymagania', 'zespół'],
    owner:'Stakeholder', flag:'tak', status:'w trakcie', added:'1 maj 2026', changed:'Stakeholder'},
 
   {id:8, key:'RR-7', title:'Feature X nie spełnia oczekiwań, potrzebne dodatkowe zmiany',
@@ -998,7 +1014,7 @@ function selectRisk(id) {
       <div class="dp-row"><span class="dp-label">Status</span><span class="dp-value">${lozenge(r.status, STATUS[r.status] || {})}</span></div>
       <div class="dp-row"><span class="dp-label">Efekt</span><span class="dp-value">${prioLozenge(r.prio)}</span></div>
       ${r.flag === 'tak' ? `<div class="dp-row"><span class="dp-label">Catch-up</span><span class="dp-value"><span class="flag-badge">wymaga omówienia</span></span></div>` : ''}
-      <div class="dp-row"><span class="dp-label">Zmiana w</span><span class="dp-value"><div class="dp-change-list">${changeBadges(r.change)}</div></span></div>
+      <div class="dp-row"><span class="dp-label">Mitygacja obejmuje</span><span class="dp-value"><div class="dp-change-list">${changeBadges(r.change)}</div></span></div>
       <div class="dp-row"><span class="dp-label">Właściciel</span><span class="dp-value">${ownerChip(r.owner)}</span></div>
       <div class="dp-row"><span class="dp-label">Dodał</span><span class="dp-value">${ownerChip(r.author)}</span></div>
       

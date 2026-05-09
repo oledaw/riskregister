@@ -61,6 +61,7 @@ function selectRisk(id) {
         <button class="btn-action" data-copy-btn onclick="copyRiskJson(${r.id})">Kopiuj JSON</button>
         ${r.flag === 'tak' ? `<button class="btn-action" onclick="markCatchupDiscussed(${r.id})">Omówiono (odznacz catch-up)</button>` : ''}
         ${statusBtns}
+        <button class="btn-action danger" onclick="deleteRisk(${r.id})">Usuń</button>
       </div>
     </div>
 
@@ -106,4 +107,13 @@ function markCatchupDiscussed(id) {
   if (!r) return;
   r.flag = 'nie'; r.changed = 'teraz';
   selectRisk(id);
+}
+
+function deleteRisk(id) {
+  const r = risks.find(x => x.id === id);
+  if (!r) return;
+  if (confirm(`Czy na pewno chcesz usunąć ryzyko ${r.key}? Operacji nie można cofnąć.`)) {
+    risks = risks.filter(x => x.id !== id);
+    closeDetail(); // closeDetail also calls render()
+  }
 }

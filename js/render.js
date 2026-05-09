@@ -108,7 +108,40 @@ function renderStats() {
 
 /* ---- Master render ---- */
 
+function setSaveStatus(success) {
+  const el = document.getElementById('save-status');
+  if (!el) return;
+  
+  if (success) {
+    el.innerHTML = `
+      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="color: #10B981;"><polyline points="20 6 9 17 4 12"></polyline></svg>
+      <span style="color: var(--text-faint);">Zapisano</span>
+    `;
+  } else {
+    el.innerHTML = `
+      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="color: #EF4444;"><circle cx="12" cy="12" r="10"></circle><line x1="12" y1="8" x2="12" y2="12"></line><line x1="12" y1="16" x2="12.01" y2="16"></line></svg>
+      <span style="color: #EF4444;">Błąd zapisu</span>
+    `;
+  }
+  
+  el.style.opacity = '1';
+  clearTimeout(el.timeout);
+  el.timeout = setTimeout(() => {
+    el.style.opacity = '0';
+  }, 2000);
+}
+
 function render() {
+  let saveSuccess = false;
+  try {
+    localStorage.setItem('riskRegisterData', JSON.stringify(risks));
+    saveSuccess = true;
+  } catch (e) {
+    console.error('Failed to save risks to local storage', e);
+  }
+  
+  setSaveStatus(saveSuccess);
+  
   const filtered = getSorted(getFiltered());
   renderTable(filtered);
   renderCards(filtered);

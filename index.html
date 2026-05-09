@@ -27,6 +27,7 @@
   </div>
   <div class="topnav-sep"></div>
   <div class="topnav-right">
+    <div id="save-status" style="display: flex; align-items: center; gap: 4px; font-size: 12px; margin-right: 8px; opacity: 0; transition: opacity 0.3s ease;"></div>
     <button class="btn-tutorial" onclick="startTour()">
       <svg width="13" height="13" viewBox="0 0 13 13" fill="none">
         <circle cx="6.5" cy="6.5" r="5.5" stroke="currentColor" stroke-width="1.3"/>
@@ -91,10 +92,25 @@
         <div class="page-title">Rejestr ryzyk</div>
         <div class="page-subtitle">Projekt Alpha · współdzielony przez PM i stakeholdera</div>
       </div>
-      <button class="btn-primary" onclick="openModal()">
-        <svg width="12" height="12" viewBox="0 0 12 12" fill="none"><path d="M6 1v10M1 6h10" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg>
-        Dodaj ryzyko
-      </button>
+      <div style="display: flex; gap: 8px;">
+        <button class="btn-secondary" onclick="importFromClipboard()" style="display: flex; align-items: center; gap: 6px;" title="Importuj jedno ryzyko ze schowka">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M16 4h2a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2h2"></path><rect x="8" y="2" width="8" height="4" rx="1" ry="1"></rect></svg>
+          Schowek
+        </button>
+        <button class="btn-secondary" onclick="exportRegister()" style="display: flex; align-items: center; gap: 6px;" title="Eksportuj cały rejestr">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path><polyline points="7 10 12 15 17 10"></polyline><line x1="12" y1="15" x2="12" y2="3"></line></svg>
+          Eksport
+        </button>
+        <button class="btn-secondary" onclick="document.getElementById('import-file').click()" style="display: flex; align-items: center; gap: 6px;" title="Importuj cały rejestr">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path><polyline points="17 8 12 3 7 8"></polyline><line x1="12" y1="3" x2="12" y2="15"></line></svg>
+          Import
+        </button>
+        <input type="file" id="import-file" style="display:none" accept=".json" onchange="importRegister(event)">
+        <button class="btn-primary" onclick="openModal()">
+          <svg width="12" height="12" viewBox="0 0 12 12" fill="none"><path d="M6 1v10M1 6h10" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg>
+          Dodaj ryzyko
+        </button>
+      </div>
     </div>
 
     <!-- Stats -->

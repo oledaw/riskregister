@@ -140,3 +140,116 @@ function saveRisk() {
     render();
   }
 }
+
+/* ---- Import JSON ---- */
+
+async function importFromClipboard() {
+  try {
+    const text = await navigator.clipboard.readText();
+    if (!text) {
+      alert('Schowek jest pusty.');
+      return;
+    }
+    
+    let data;
+    try {
+      data = JSON.parse(text);
+    } catch (e) {
+      alert('Schowek nie zawiera poprawnego formatu JSON.');
+      return;
+    }
+
+    const {
+      title,
+      desc,
+      cons,
+      prio,
+      author,
+      mit,
+      change,
+      owner,
+      flag,
+      status,
+      added,
+      changed
+    } = data;
+
+    if (!title) {
+      alert('Brak pola "title" w JSON. Ryzyko musi posiadać tytuł.');
+      return;
+    }
+
+    const now = new Date().toLocaleDateString('pl-PL', { day:'numeric', month:'short', year:'numeric' });
+
+    risks.unshift({
+      id: getNextId(),
+      key: 'RR-' + getNextKey(),
+      title: title || '',
+      desc: desc || '',
+      cons: cons || '',
+      prio: prio || 'przesuwa termin',
+      author: author || 'PM',
+      mit: mit || '',
+      change: Array.isArray(change) ? change : [],
+      owner: owner || 'PM',
+      flag: flag || 'nie',
+      status: status || 'otwarty',
+      added: added || now,
+      changed: changed || '—'
+    });
+
+    render();
+    alert('Zaimportowano ryzyko z JSON.');
+  } catch (err) {
+    console.error('Failed to read clipboard contents: ', err);
+    alert('Nie udało się odczytać ze schowka. Upewnij się, że masz odpowiednie uprawnienia w przeglądarce.');
+  }
+}
+
+/* ---- Export & Import Register ---- */
+
+function exportRegister() {
+  const dataStr = JSON.stringify(risks, null, 2);
+  const blob = new Blob([dataStr], { type: "application/json" });
+  const url = URL.createObjectURL(blob);
+  
+  const a = document.createElement('a');
+  a.href = url;
+  a.download = `risk_register_${new Date().toISOString().split('T')[0]}.json`;
+  a.click();
+  
+  URL.revokeObjectURL(url);
+}
+
+function importRegister(event) {
+  const file = event.target.files[0];
+  if (!file) return;
+
+  const reader = new FileReader();
+  reader.onload = function(e) {
+    try {
+      const parsed = JSON.parse(e.target.result);
+      if (!Array.isArray(parsed)) {
+        alert("Plik nie zawiera poprawnej listy ryzyk (oczekiwano tablicy JSON).");
+        return;
+      }
+      
+      const validRisks = parsed.filter(r => r.title && typeof r.id !== 'undefined' && r.key);
+      if (validRisks.length === 0) {
+        alert("Plik nie zawiera poprawnych ryzyk.");
+        return;
+      }
+      
+      if (confirm(`Czy na pewno chcesz nadpisać obecny rejestr ${validRisks.length} ryzykami z pliku? Poprzednie dane zostaną usunięte.`)) {
+        risks = validRisks;
+        render();
+        alert("Rejestr został zaimportowany.");
+      }
+    } catch (err) {
+      console.error(err);
+      alert("Błąd podczas parsowania pliku JSON.");
+    }
+  };
+  reader.readAsText(file);
+  event.target.value = ""; // Reset file input
+}

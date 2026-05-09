@@ -93,18 +93,30 @@
         <div class="page-subtitle">Projekt Alpha · współdzielony przez PM i stakeholdera</div>
       </div>
       <div style="display: flex; gap: 8px;">
-        <button class="btn-secondary" onclick="importFromClipboard()" style="display: flex; align-items: center; gap: 6px;" title="Importuj jedno ryzyko ze schowka">
-          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M16 4h2a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2h2"></path><rect x="8" y="2" width="8" height="4" rx="1" ry="1"></rect></svg>
-          Schowek
-        </button>
-        <button class="btn-secondary" onclick="exportRegister()" style="display: flex; align-items: center; gap: 6px;" title="Eksportuj cały rejestr">
-          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path><polyline points="7 10 12 15 17 10"></polyline><line x1="12" y1="15" x2="12" y2="3"></line></svg>
-          Eksport
-        </button>
-        <button class="btn-secondary" onclick="document.getElementById('import-file').click()" style="display: flex; align-items: center; gap: 6px;" title="Importuj cały rejestr">
-          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path><polyline points="17 8 12 3 7 8"></polyline><line x1="12" y1="3" x2="12" y2="15"></line></svg>
-          Import
-        </button>
+        <div class="action-wrapper">
+          <button class="btn-secondary" onclick="toggleActionMenu()" style="padding: 0 8px; height: 32px; display: flex; align-items: center; justify-content: center;" title="Więcej akcji">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="1"></circle><circle cx="12" cy="5" r="1"></circle><circle cx="12" cy="19" r="1"></circle></svg>
+          </button>
+          <div class="action-dropdown" id="action-dropdown">
+            <button class="action-dropdown-item" onclick="importFromClipboard(); toggleActionMenu();">
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M16 4h2a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2h2"></path><rect x="8" y="2" width="8" height="4" rx="1" ry="1"></rect></svg>
+              Schowek
+            </button>
+            <button class="action-dropdown-item" onclick="exportRegister(); toggleActionMenu();">
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path><polyline points="7 10 12 15 17 10"></polyline><line x1="12" y1="15" x2="12" y2="3"></line></svg>
+              Eksportuj
+            </button>
+            <button class="action-dropdown-item" onclick="document.getElementById('import-file').click(); toggleActionMenu();">
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path><polyline points="17 8 12 3 7 8"></polyline><line x1="12" y1="3" x2="12" y2="15"></line></svg>
+              Importuj
+            </button>
+            <hr style="margin: 4px 0; border: none; border-top: 1px solid var(--border);">
+            <button class="action-dropdown-item" onclick="clearLocalStorage(); toggleActionMenu();" style="color: #EF4444;">
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="3 6 5 6 21 6"></polyline><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"></path></svg>
+              Wyczyść dane
+            </button>
+          </div>
+        </div>
         <input type="file" id="import-file" style="display:none" accept=".json" onchange="importRegister(event)">
         <button class="btn-primary" onclick="openModal()">
           <svg width="12" height="12" viewBox="0 0 12 12" fill="none"><path d="M6 1v10M1 6h10" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg>

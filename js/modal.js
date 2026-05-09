@@ -253,3 +253,32 @@ function importRegister(event) {
   reader.readAsText(file);
   event.target.value = ""; // Reset file input
 }
+
+/* ---- Action Menu Toggle ---- */
+
+function toggleActionMenu() {
+  const dropdown = document.getElementById('action-dropdown');
+  if (dropdown) {
+    dropdown.classList.toggle('open');
+  }
+}
+
+// Close action menu when clicking outside
+document.addEventListener('click', e => {
+  const wrapper = document.querySelector('.action-wrapper');
+  if (wrapper && !wrapper.contains(e.target)) {
+    const dropdown = document.getElementById('action-dropdown');
+    if (dropdown) {
+      dropdown.classList.remove('open');
+    }
+  }
+});
+
+/* ---- Clear Local Storage ---- */
+
+function clearLocalStorage() {
+  if (confirm("Czy na pewno chcesz usunąć wszystkie dane z pamięci przeglądarki?\n\nZostaną przywrócone dane domyślne. Operacji nie można cofnąć.")) {
+    localStorage.removeItem('riskRegisterData');
+    location.reload();
+  }
+}
